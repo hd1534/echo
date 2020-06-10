@@ -1,16 +1,14 @@
 # This file is a template, and might need editing before it works on your project.
 
-ARG DIR="/home/echo"
-ARG NODE_ENV="production"
-ARG TIMEZONE="Asis/Seoul"
+ENV DIR "/home/echo"
+ENV NODE_ENV "production"
+ENV TIMEZONE "Asis/Seoul"
 
 FROM node:8.11
 WORKDIR $DIR
 EXPOSE 80
 
 RUN echo Asis/Seoul > /etc/timezone
-
-ENV NODE_ENV $NODE_ENV
 
 COPY ./ $DIR
 
