@@ -1,0 +1,48 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DIMIGOIN_REGISTRY: docker-registry.dimigo.in
+  IMAGE_NAME: echo-back
+  DEV_IMAGE_NAME: dev-echo-back
+  PRO_IMAGE_TAG: $DIMIGOIN_REGISTRY/$IMAGE_NAME:latest
+  DEV_IMAGE_TAG: $DIMIGOIN_REGISTRY/$DEV_IMAGE_NAME:latest
+
+
+docker-build:
+  image: docker:latest
+  stage: build
+  script:
+    - docker build -t $PRO_IMAGE_TAG -t $DEV_IMAGE_TAG .
+  tags:
+    - main
+
+dev-deploy:
+ image: docker:latest
+ stage: deploy
+ only:
+    - develop
+ script:
+    - docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD $DIMIGOIN_REGISTRY
+    - docker push $DEV_IMAGE_TAG
+ environment:
+    name: test
+    url: https://dev-api.echo.dimigo.in
+ tags:
+    - main
+
+production-deploy:
+  image: docker:latest
+  stage: deploy
+  only:
+    - master
+  when: manual
+  script:
+    - docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD $DIMIGOIN_REGISTRY
+    - docker push $PRO_IMAGE_TAG
+  environment:
+    name: test
+    url: https://api.echo.dimigo.in
+  tags:
+    - main
