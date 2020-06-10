@@ -1,12 +1,10 @@
 # This file is a template, and might need editing before it works on your project.
-
-ENV DIR "/home/echo"
-ENV NODE_ENV "production"
-ENV TIMEZONE "Asis/Seoul"
-
 FROM node:8.11
 WORKDIR $DIR
 EXPOSE 80
+
+ENV DIR "/home/echo"
+ENV NODE_ENV "production"
 
 RUN echo Asis/Seoul > /etc/timezone
 
