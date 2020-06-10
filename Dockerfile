@@ -12,10 +12,10 @@ RUN echo Asis/Seoul > /etc/timezone
 
 ENV NODE_ENV $NODE_ENV
 
-COPY package.json $DIR
-RUN npm install
-
 COPY ./ $DIR
+
+WORKDIR $DIR/echo
+RUN npm install
 
 
 RUN chmod a+x /home/echo/app/docker-entrypoint.sh
