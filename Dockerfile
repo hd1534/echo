@@ -1,5 +1,5 @@
 # This file is a template, and might need editing before it works on your project.
-FROM node:8.11
+FROM node:12
 WORKDIR $DIR
 EXPOSE 80
 
