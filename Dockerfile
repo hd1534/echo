@@ -1,8 +1,8 @@
 # This file is a template, and might need editing before it works on your project.
 
-ARG DIR = "/home/echo"
-ARG NODE_ENV = "production"
-ARG TIMEZONE = "Asis/Seoul"
+ARG DIR="/home/echo"
+ARG NODE_ENV="production"
+ARG TIMEZONE="Asis/Seoul"
 
 FROM node:8.11
 WORKDIR $DIR
