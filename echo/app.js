@@ -6,7 +6,9 @@ var mongoose = require('mongoose');
 // const swaggerUi = require('swagger-ui-express');  // it will be added someday
 // const swaggerJSDoc = require('swagger-jsdoc');
 // const swaggerDocument = require('./swagger.json');
-var result = require('dotenv').config({ path: '../.env' });
+
+if (process.env.RUNNIG_ENV != "server")
+  var result = require('dotenv').config({ path: '../.env' });
 
 var app = express();
 
