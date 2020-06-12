@@ -13,7 +13,7 @@ WORKDIR $DIR/echo
 RUN npm install
 
 
-RUN chmod a+x $DIR/.docker-entrypoint.sh
+RUN chmod a+x $DIR/docker-entrypoint.sh
 
-ENTRYPOINT ["$DIR/.docker-entrypoint.sh"]
+ENTRYPOINT ["$DIR/docker-entrypoint.sh"]
 CMD [ "npm", "start" ]
