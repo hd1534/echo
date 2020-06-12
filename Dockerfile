@@ -1,6 +1,5 @@
 # This file is a template, and might need editing before it works on your project.
 FROM node:12
-WORKDIR $DIR
 EXPOSE 80
 
 ENV DIR "/home/echo"
