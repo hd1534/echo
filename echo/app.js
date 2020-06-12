@@ -7,15 +7,15 @@ var mongoose = require('mongoose');
 // const swaggerJSDoc = require('swagger-jsdoc');
 // const swaggerDocument = require('./swagger.json');
 
-if (process.env.RUNNIG_ENV != "server")
+if (process.env.RUNNIG_ENV != "server"){
   var result = require('dotenv').config({ path: '../.env' });
+  if (result.error) {
+    throw result.error;
+  }
+  console.log(result.parsed);
+}
 
 var app = express();
-
-if (result.error) {
-  throw result.error;
-}
-console.log(result.parsed);
 
 mongoose.connect(process.env.MONGO_DB_ADDRESS, {useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
