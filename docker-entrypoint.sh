@@ -10,7 +10,7 @@ echo "=======MIGRATE DATABASE======="
 echo "**********UPGRADE DB**********"
 
 echo "===========ENV===========";
-RUNNIG_ENV="server"
+
 printenv
 
 echo "==============================";
