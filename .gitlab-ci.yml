@@ -5,9 +5,8 @@ stages:
 variables:
   DIMIGOIN_REGISTRY: docker-registry.dimigo.in
   IMAGE_NAME: echo-back
-  DEV_IMAGE_NAME: dev-echo-back
-  PRO_IMAGE_TAG: $DIMIGOIN_REGISTRY/$IMAGE_NAME:latest
-  DEV_IMAGE_TAG: $DIMIGOIN_REGISTRY/$DEV_IMAGE_NAME:latest
+  PRO_IMAGE_TAG: $DIMIGOIN_REGISTRY/$IMAGE_NAME:production
+  DEV_IMAGE_TAG: $DIMIGOIN_REGISTRY/$IMAGE_NAME:dev
 
 
 docker-build:
