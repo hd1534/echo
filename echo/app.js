@@ -7,6 +7,12 @@ var mongoose = require('mongoose');
 // const swaggerJSDoc = require('swagger-jsdoc');
 // const swaggerDocument = require('./swagger.json');
 
+
+var options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}
+
 if (process.env.RUNNIG_ENV != "server"){
   var result = require('dotenv').config({ path: '../.env' });
   if (result.error) {
@@ -14,15 +20,20 @@ if (process.env.RUNNIG_ENV != "server"){
   }
   console.log(result.parsed);
 }
+else {
+  options.user = process.env.MONGO_DB_USER
+  options.password = process.env.MONGO_DB_PASSWORD
+}
 
-var app = express();
-
-mongoose.connect(process.env.MONGO_DB_ADDRESS, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGO_DB_ADDRESS, options);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("mongodb is connected");  // we're connected!
 });
+
+
+var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
