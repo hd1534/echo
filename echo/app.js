@@ -2,16 +2,9 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var mongoose = require('mongoose');
 // const swaggerUi = require('swagger-ui-express');  // it will be added someday
 // const swaggerJSDoc = require('swagger-jsdoc');
 // const swaggerDocument = require('./swagger.json');
-
-
-var options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}
 
 if (process.env.RUNNIG_ENV != "server"){
   var result = require('dotenv').config({ path: '../.env' });
@@ -20,18 +13,9 @@ if (process.env.RUNNIG_ENV != "server"){
   }
   console.log(result.parsed);
 }
-else {
-  options.user = process.env.MONGO_DB_USER
-  options.password = process.env.MONGO_DB_PASSWORD
-}
 
-mongoose.connect(process.env.MONGO_DB_ADDRESS, options);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("mongodb is connected");  // we're connected!
-});
-
+var mongoDB = require('./mongo').connectMongo(process.env);
+var sqlDB = 'will be updated soon!'
 
 var app = express();
 
@@ -49,7 +33,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // set locals, only provi-ding error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
