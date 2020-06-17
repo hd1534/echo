@@ -13,7 +13,7 @@ prettier:
     image: node
     stage: code_style
     script:
-      - npm i prettier
+      - npm i prettier -g
       - prettier --check "\.js$"
 
 docker-build:
