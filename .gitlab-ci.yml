@@ -1,4 +1,5 @@
 stages:
+  - code_style
   - build
   - deploy
 
@@ -8,6 +9,12 @@ variables:
   PRO_IMAGE_TAG: $DIMIGOIN_REGISTRY/$IMAGE_NAME:production
   DEV_IMAGE_TAG: $DIMIGOIN_REGISTRY/$IMAGE_NAME:dev
 
+prettier:
+    image: node
+    stage: code_style
+    script:
+      - npm i prettier
+      - prettier --check "\.js$"
 
 docker-build:
   image: docker:latest
