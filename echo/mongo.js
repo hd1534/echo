@@ -8,8 +8,11 @@ module.exports.connectMongo = (env) => {
     useUnifiedTopology: true
   }
 
-  if (env.MONGO_DB_USER) options.user = env.MONGO_DB_USER
-  if (env.MONGO_DB_PASSWORD) options.password = env.MONGO_DB_PASSWORD
+  if (env.MONGO_DB_PASSWORD || env.MONGO_DB_USER) {
+    options.auth = {}
+    if (env.MONGO_DB_USER) options.auth.user = env.MONGO_DB_USER
+    if (env.MONGO_DB_PASSWORD) options.auth.password = env.MONGO_DB_PASSWORD
+  }
   if (env.MONGO_DB_NAME) options.dbName = env.MONGO_DB_NAME
 
   mongoose.connect(env.MONGO_DB_ADDRESS, options);
