@@ -1,26 +1,30 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Permission', {
-    idx: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+module.exports = function (sequelize, DataTypes) {
+  return sequelize.define(
+    "Permission",
+    {
+      idx: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      user_idx: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
+      },
+      section: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+      level: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
+      },
     },
-    user_idx: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    section: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    level: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
+    {
+      tableName: "permission",
     }
-  }, {
-    tableName: 'permission'
-  });
+  );
 };
