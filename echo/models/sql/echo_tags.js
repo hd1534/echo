@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('echo_tags', {
+  return sequelize.define('EchoTags', {
     idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false,

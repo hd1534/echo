@@ -1,0 +1,50 @@
+[
+  {
+    "model": "AlembicVersion",
+    "file": "alembic_version"
+  },
+  {
+    "model": "EchoComment",
+    "file": "echo_comment"
+  },
+  {
+    "model": "EchoPostAndTags",
+    "file": "echo_post_and_tags"
+  },
+  {
+    "model": "EchoPostNotTags",
+    "file": "echo_post_not_tags"
+  },
+  {
+    "model": "EchoPostOrTags",
+    "file": "echo_post_or_tags"
+  },
+  {
+    "model": "EchoPosts",
+    "file": "echo_posts"
+  },
+  {
+    "model": "EchoTags",
+    "file": "echo_tags"
+  },
+  {
+    "model": "EchoUserTags",
+    "file": "echo_user_tags"
+  },
+  {
+    "model": "Permission",
+    "file": "permission"
+  },
+  {
+    "model": "RevokedToken",
+    "file": "revoked_token"
+  },
+  {
+    "model": "Student",
+    "file": "student"
+  },
+  {
+    "model": "User",
+    "file": "user"
+  }
+]

@@ -1,30 +1,34 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('echo_post_or_tags', {
+  return sequelize.define('EchoPosts', {
     idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    post_idx: {
+    writer_idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       references: {
-        model: 'echo_posts',
+        model: 'user',
         key: 'idx'
       }
     },
-    tag_idx: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      references: {
-        model: 'echo_tags',
-        key: 'idx'
-      }
+    posted_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    title: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   }, {
-    tableName: 'echo_post_or_tags'
+    tableName: 'echo_posts'
   });
 };

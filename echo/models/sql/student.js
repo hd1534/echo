@@ -1,34 +1,33 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('echo_posts', {
+  return sequelize.define('Student', {
     idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
-    },
-    writer_idx: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
       references: {
         model: 'user',
         key: 'idx'
       }
     },
-    posted_date: {
-      type: DataTypes.DATE,
+    grade: {
+      type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    title: {
-      type: DataTypes.TEXT,
+    klass: {
+      type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    content: {
-      type: DataTypes.TEXT,
+    number: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
+    serial: {
+      type: DataTypes.STRING(10),
       allowNull: false
     }
   }, {
-    tableName: 'echo_posts'
+    tableName: 'student'
   });
 };

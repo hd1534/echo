@@ -1,33 +1,26 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('student', {
+  return sequelize.define('Permission', {
     idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
-      references: {
-        model: 'user',
-        key: 'idx'
-      }
+      autoIncrement: true
     },
-    grade: {
+    user_idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    klass: {
-      type: DataTypes.INTEGER(11),
+    section: {
+      type: DataTypes.STRING(50),
       allowNull: false
     },
-    number: {
+    level: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    serial: {
-      type: DataTypes.STRING(10),
       allowNull: false
     }
   }, {
-    tableName: 'student'
+    tableName: 'permission'
   });
 };

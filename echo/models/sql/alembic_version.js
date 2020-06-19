@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('alembic_version', {
+  return sequelize.define('AlembicVersion', {
     version_num: {
       type: DataTypes.STRING(32),
       allowNull: false,

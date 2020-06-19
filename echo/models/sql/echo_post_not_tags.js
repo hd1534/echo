@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('echo_post_and_tags', {
+  return sequelize.define('EchoPostNotTags', {
     idx: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -25,6 +25,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'echo_post_and_tags'
+    tableName: 'echo_post_not_tags'
   });
 };
