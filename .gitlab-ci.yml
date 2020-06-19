@@ -14,7 +14,7 @@ prettier:
     stage: code_style
     script:
       - npm i prettier -g
-      - prettier --check "\.js$"
+      - prettier --check "**/*.js"
 
 docker-build:
   image: docker:latest
