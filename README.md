@@ -7,6 +7,7 @@ master
 develop
 [![pipeline status](https://git.dimigo.in/echo/echo-backend/badges/develop/pipeline.svg)](https://git.dimigo.in/echo/echo-backend/commits/develop)
 [![coverage report](https://git.dimigo.in/echo/echo-backend/badges/develop/coverage.svg)](https://git.dimigo.in/echo/echo-backend/commits/develop)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 에코 백엔드
 
