@@ -14,7 +14,7 @@ if (process.env.RUNNIG_ENV != "server") {
   console.log(result.parsed);
 }
 
-var mongoDB = require("./mongo").connectMongo(process.env);
+// var mongoDB = require("./mongo").connectMongo(process.env);  설정 다 되어있으니 필요하면 주석해제 할것.
 var sqlDB = require("./models/sql").sequelize;
 sqlDB.sync(); // 테이블 확인 후 동기화 (자동 생성)
 
