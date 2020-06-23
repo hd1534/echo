@@ -34,9 +34,9 @@ try {
 }
 
 const dbConfig = require("../config/mysql.conf.json");
-for (model in dbConfig) {
-  db[model.model] = require("./" + model.file)(sequelize, Sequelize);
-}
+dbConfig.forEach(({ model, file }) => {
+  db[model] = require("./" + file)(sequelize, Sequelize);
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
