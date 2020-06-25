@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "EchoTags",
+    "PostNotTags",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -10,33 +10,25 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true,
       },
-      name: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-      },
-      owner_idx: {
+      post_idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
         references: {
-          model: "user",
+          model: "posts",
           key: "idx",
         },
       },
-      created_date: {
-        type: DataTypes.DATE,
+      tag_idx: {
+        type: DataTypes.INTEGER(11),
         allowNull: false,
-      },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      join_option: {
-        type: DataTypes.ENUM("private", "request", "free_for_all"),
-        allowNull: true,
+        references: {
+          model: "tags",
+          key: "idx",
+        },
       },
     },
     {
-      tableName: "echo_tags",
+      tableName: "post_not_tags",
     }
   );
 };

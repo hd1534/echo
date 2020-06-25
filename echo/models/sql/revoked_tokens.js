@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "RevokedToken",
+    "RevokedTokens",
     {
       id: {
         type: DataTypes.INTEGER(11),
@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
       },
     },
     {
-      tableName: "revoked_token",
+      tableName: "revoked_tokens",
     }
   );
 };

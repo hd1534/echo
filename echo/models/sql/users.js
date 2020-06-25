@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "User",
+    "Users",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
       },
     },
     {
-      tableName: "user",
+      tableName: "users",
     }
   );
 };

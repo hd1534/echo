@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "Permission",
+    "PostAndTags",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -10,21 +10,25 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true,
       },
-      user_idx: {
+      post_idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
+        references: {
+          model: "posts",
+          key: "idx",
+        },
       },
-      section: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-      },
-      level: {
+      tag_idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
+        references: {
+          model: "tags",
+          key: "idx",
+        },
       },
     },
     {
-      tableName: "permission",
+      tableName: "post_and_tags",
     }
   );
 };

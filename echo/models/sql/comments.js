@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "EchoComment",
+    "Comment",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER(11),
         allowNull: false,
         references: {
-          model: "echo_posts",
+          model: "posts",
           key: "idx",
         },
       },
@@ -56,7 +56,7 @@ module.exports = function (sequelize, DataTypes) {
       },
     },
     {
-      tableName: "echo_comment",
+      tableName: "comments",
     }
   );
 };

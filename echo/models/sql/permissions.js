@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "EchoPosts",
+    "Permissions",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -10,29 +10,21 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true,
       },
-      writer_idx: {
+      user_idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
-        references: {
-          model: "user",
-          key: "idx",
-        },
       },
-      posted_date: {
-        type: DataTypes.DATE,
+      section: {
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
-      title: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      content: {
-        type: DataTypes.TEXT,
+      level: {
+        type: DataTypes.INTEGER(11),
         allowNull: false,
       },
     },
     {
-      tableName: "echo_posts",
+      tableName: "permissions",
     }
   );
 };

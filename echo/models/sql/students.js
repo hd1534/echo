@@ -2,33 +2,36 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "EchoPostNotTags",
+    "Students",
     {
       idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
-      },
-      post_idx: {
-        type: DataTypes.INTEGER(11),
-        allowNull: false,
         references: {
-          model: "echo_posts",
+          model: "users",
           key: "idx",
         },
       },
-      tag_idx: {
+      grade: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
-        references: {
-          model: "echo_tags",
-          key: "idx",
-        },
+      },
+      klass: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
+      },
+      number: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
+      },
+      serial: {
+        type: DataTypes.STRING(10),
+        allowNull: false,
       },
     },
     {
-      tableName: "echo_post_not_tags",
+      tableName: "students",
     }
   );
 };
