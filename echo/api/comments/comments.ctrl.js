@@ -1,5 +1,13 @@
-const testModel = require("../../models/mongo/test");
-const mongoose = require("mongoose");
+const { Comments } = require("../../models/sql");
+
+const findAll = () => {
+  const comment = Comments.findAll({ attributes: ["idx", "title"] });
+  comment.then((result) => {
+    if (!result) {
+      res.send("ERRORRRRRRR");
+    } else res.send(result);
+  });
+}
 
 // id 유효성 체크
 const checkId = (req, res, next) => {

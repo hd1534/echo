@@ -4,47 +4,47 @@
     "file": "alembic_version"
   },
   {
-    "model": "EchoComment",
-    "file": "echo_comment"
+    "model": "Comments",
+    "file": "comments"
   },
   {
-    "model": "EchoPostAndTags",
-    "file": "echo_post_and_tags"
+    "model": "PostAndTags",
+    "file": "post_and_tags"
   },
   {
-    "model": "EchoPostNotTags",
-    "file": "echo_post_not_tags"
+    "model": "PostNotTags",
+    "file": "post_not_tags"
   },
   {
-    "model": "EchoPostOrTags",
-    "file": "echo_post_or_tags"
+    "model": "PostOrTags",
+    "file": "post_or_tags"
   },
   {
-    "model": "EchoPosts",
-    "file": "echo_posts"
+    "model": "Posts",
+    "file": "posts"
   },
   {
-    "model": "EchoTags",
-    "file": "echo_tags"
+    "model": "Tags",
+    "file": "tags"
   },
   {
-    "model": "EchoUserTags",
-    "file": "echo_user_tags"
+    "model": "UserTags",
+    "file": "user_tags"
   },
   {
-    "model": "Permission",
-    "file": "permission"
+    "model": "Permissions",
+    "file": "permissions"
   },
   {
-    "model": "RevokedToken",
-    "file": "revoked_token"
+    "model": "RevokedTokens",
+    "file": "revoked_tokens"
   },
   {
-    "model": "Student",
-    "file": "student"
+    "model": "Students",
+    "file": "students"
   },
   {
-    "model": "User",
-    "file": "user"
+    "model": "Users",
+    "file": "users"
   }
 ]
