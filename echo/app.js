@@ -1,7 +1,8 @@
 var createError = require("http-errors");
 var express = require("express");
-// var path = require("path");
+var logger = require("morgan");
 var cookieParser = require("cookie-parser");
+// var path = require("path");
 // const swaggerUi = require('swagger-ui-express');  // it will be added someday
 // const swaggerJSDoc = require('swagger-jsdoc');
 // const swaggerDocument = require('./swagger.json');
@@ -22,6 +23,7 @@ var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(logger("dev"));
 app.use(cookieParser());
 
 app.use(require("./api"));
@@ -34,14 +36,9 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only provi-ding error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
+  // only provi-ding error in development
   res.status(err.status || 500);
-  res.render("error");
-  // res.send("error");
+  res.send(req.app.get("env") === "development" ? err : {});
 });
 
 module.exports = app;

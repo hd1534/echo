@@ -1,21 +1,17 @@
 const { Comments } = require("../../models/sql");
 
-const findAll = () => {
-  const comment = Comments.findAll({ attributes: ["idx", "title"] });
-  comment.then((result) => {
-    if (!result) {
-      res.send("ERRORRRRRRR");
-    } else res.send(result);
-  });
-};
-
-// id 유효성 체크
-const checkId = (req, res, next) => {
-  const id = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).end();
-
-  next();
+const findAll = (req, res, next) => {
+  Comments.findAll({
+    attributes: ["idx", "content"],
+  })
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("NotFound");
+      } else res.send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 // 목록조회
@@ -97,4 +93,4 @@ const remove = (req, res, next) => {
   });
 };
 
-module.exports = { checkId, list, detail, create, update, remove };
+module.exports = { findAll };
