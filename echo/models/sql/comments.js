@@ -40,7 +40,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       wrote_date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        defaultValue: sequelize.NOW,
       },
       content: {
         type: DataTypes.TEXT,

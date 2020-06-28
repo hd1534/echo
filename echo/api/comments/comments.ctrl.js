@@ -1,45 +1,48 @@
 const { Comments } = require("../../models/sql");
 
 const findAll = (req, res, next) => {
+  const offset = parseInt(req.query.offset || 0, 10);
+  const limit = parseInt(req.query.limit || 10, 10);
+  if (Number.isNaN(limit) || Number.isNaN(offset)) return res.status(400).end(); // 에러는 마음대로 (400 = bad request)
+
   Comments.findAll({
     attributes: ["idx", "content"],
+    offset: offset,
+    limit: limit,
   })
     .then((result) => {
       if (!result) {
         res.status(404).send("NotFound");
-      } else res.send(result);
+      } else {
+        console.log(result);
+        res.send(result);
+      }
     })
     .catch((err) => {
       next(err);
     });
 };
 
-// 목록조회
-const list = (req, res, next) => {
-  const limit = parseInt(req.query.limit || 10, 10);
+const findByIdx = (req, res, next) => {
+  const idx = req.params.idx;
 
-  if (Number.isNaN(limit)) return res.status(400).end(); // 에러는 마음대로 (400 = bad request)
-
-  testModel
-    .find((err, result) => {
-      if (err) next(err); // 직접 처리해도 됨
-
-      // res.json(result);
-      res.json(result);
+  Comments.findOne({
+    attributes: ["idx", "content"],
+    where: {
+      idx: idx,
+    },
+  })
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("NotFound");
+      } else {
+        console.log(result);
+        res.send(result);
+      }
     })
-    .limit(limit);
-};
-// 상세조회   api/test/:id
-const detail = (req, res, next) => {
-  const id = req.params.id;
-
-  result = testModel.findById(id, (err, result) => {
-    if (err) next(err);
-
-    if (!result) return res.status(404).end();
-
-    res.json(result);
-  });
+    .catch((err) => {
+      next(err);
+    });
 };
 // 등록
 const create = (req, res, next) => {
@@ -69,7 +72,7 @@ const update = (req, res, next) => {
   const { test, data } = req.body;
 
   //                           id, data           , option     , callback function
-  testModel.findByIdAndUpdate(
+  testModel.findByIdxAndUpdate(
     id,
     { test, data },
     { new: true },
@@ -85,7 +88,7 @@ const update = (req, res, next) => {
 const remove = (req, res, next) => {
   const id = req.params.id;
 
-  testModel.findByIdAndDelete(id, (err, result) => {
+  testModel.findByIdxAndDelete(id, (err, result) => {
     if (err) next(err);
     if (!result) return res.status(404).end();
 
@@ -93,4 +96,4 @@ const remove = (req, res, next) => {
   });
 };
 
-module.exports = { findAll };
+module.exports = { findAll, findByIdx };
