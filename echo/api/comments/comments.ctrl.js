@@ -1,5 +1,11 @@
 const { Comments } = require("../../models/sql");
 
+const idxChecker = (req, res, next) => {
+  const idx = req.params.idx;
+  if (isNaN(idx)) return res.status(400).send("check your idx");
+  next();
+};
+
 const findAll = (req, res, next) => {
   const offset = parseInt(req.query.offset || 0, 10);
   const limit = parseInt(req.query.limit || 10, 10);
@@ -14,7 +20,6 @@ const findAll = (req, res, next) => {
       if (!result) {
         res.status(404).send("NotFound");
       } else {
-        console.log(result);
         res.send(result);
       }
     })
@@ -46,23 +51,24 @@ const findByIdx = (req, res, next) => {
 };
 // 등록
 const create = (req, res, next) => {
-  const { test, data } = req.body;
-  console.log(data);
-  if (!test || !data) return res.status(400).end();
-
-  // Document.save()
-  // const test = new testModel({test, data});
-  // test.save((err, result) => {
-  //     if (err)
-  //         next(err);
-  //     res.status(201).json(result);
-  // })
-
-  // TestModel.create()
-  testModel.create({ test, data }, (err, result) => {
-    if (err) next(err);
-    res.status(201).json(result);
-  });
+  console.log(req.body);
+  Comments.create(req.body, { returning: true })
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("NotFound");
+      } else {
+        console.log(result);
+        res.send(result);
+      }
+    })
+    .catch((err) => {
+      // instanceof 사용하도록 바꾸기
+      if (err.name == "SequelizeValidationError")
+        res.status(400).send(err.errors.map((err) => err.message));
+      if (err.name == "SequelizeDatabaseError")
+        res.status(400).send(err.parent.sqlMessage);
+      next(err);
+    });
 };
 
 // 수정  api/test/:id
@@ -84,16 +90,25 @@ const update = (req, res, next) => {
     }
   );
 };
-// 삭제  api/test/:id
-const remove = (req, res, next) => {
-  const id = req.params.id;
 
-  testModel.findByIdxAndDelete(id, (err, result) => {
-    if (err) next(err);
-    if (!result) return res.status(404).end();
+const findByIdxAndDelete = (req, res, next) => {
+  const idx = req.params.idx;
 
-    res.send(result);
-  });
+  Comments.destroy({
+    where: {
+      idx: idx,
+    },
+  })
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("NotFound");
+      } else {
+        res.send(result);
+      }
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-module.exports = { findAll, findByIdx };
+module.exports = { idxChecker, create, findAll, findByIdx, findByIdxAndDelete };

@@ -36,9 +36,11 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  console.error(err);
+
   // only provi-ding error in development
   res.status(err.status || 500);
-  res.send(req.app.get("env") === "development" ? err : {});
+  res.send(req.app.get("env") === "development" ? err : "ERROR");
 });
 
 module.exports = app;
