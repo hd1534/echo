@@ -23,9 +23,7 @@ const findAll = (req, res, next) => {
         res.send(result);
       }
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch((err) => next(err));
 };
 
 const findByIdx = (req, res, next) => {
@@ -45,13 +43,10 @@ const findByIdx = (req, res, next) => {
         res.send(result);
       }
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch((err) => next(err));
 };
-// 등록
+
 const create = (req, res, next) => {
-  console.log(req.body);
   Comments.create(req.body, { returning: true })
     .then((result) => {
       if (!result) {
@@ -61,34 +56,24 @@ const create = (req, res, next) => {
         res.send(result);
       }
     })
-    .catch((err) => {
-      // instanceof 사용하도록 바꾸기
-      if (err.name == "SequelizeValidationError")
-        res.status(400).send(err.errors.map((err) => err.message));
-      if (err.name == "SequelizeDatabaseError")
-        res.status(400).send(err.parent.sqlMessage);
-      next(err);
-    });
+    .catch((err) => next(err));
 };
 
-// 수정  api/test/:id
-const update = (req, res, next) => {
-  const id = req.params.id;
-
-  const { test, data } = req.body;
-
-  //                           id, data           , option     , callback function
-  testModel.findByIdxAndUpdate(
-    id,
-    { test, data },
-    { new: true },
-    (err, result) => {
-      if (err) next(err);
-      if (!result) return res.status(404).end();
-
-      res.json(result);
-    }
-  );
+const updateByIdx = (req, res, next) => {
+  const idx = req.params.idx;
+  Comments.update(req.body, {
+    where: { idx: idx },
+    fields: ["content"], // fields to update
+  })
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("NotFound");
+      } else {
+        console.log(result);
+        res.send(result);
+      }
+    })
+    .catch((err) => next(err));
 };
 
 const findByIdxAndDelete = (req, res, next) => {
@@ -103,12 +88,17 @@ const findByIdxAndDelete = (req, res, next) => {
       if (!result) {
         res.status(404).send("NotFound");
       } else {
-        res.send(result);
+        res.status(200).send("deleted");
       }
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch((err) => next(err));
 };
 
-module.exports = { idxChecker, create, findAll, findByIdx, findByIdxAndDelete };
+module.exports = {
+  idxChecker,
+  create,
+  updateByIdx,
+  findAll,
+  findByIdx,
+  findByIdxAndDelete,
+};
