@@ -10,8 +10,8 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true,
       },
-      jti: {
-        type: DataTypes.STRING(120),
+      jwt: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },

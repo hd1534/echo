@@ -3,11 +3,9 @@ var router = express.Router();
 const ctrl = require("./user.ctrl");
 
 // router.get("/", ctrl.findAll);
-router.post("/register", ctrl.register);
-router.post("/token", ctrl.getToken);
-router.get("/tokenCheck", ctrl.tokenCheck);
-// router.get("/idx/:idx", ctrl.idxChecker, ctrl.findByIdx); // 상세 조회
-// router.put("/idx/:idx", ctrl.idxChecker, ctrl.updateByIdx); // 수정
-// router.delete("/idx/:idx", ctrl.idxChecker, ctrl.findByIdxAndDelete); // 삭제
+router.post("/", ctrl.create);
+router.get("/", ctrl.findByIdx);
+router.put("/", ctrl.updateByIdx);
+router.delete("/", ctrl.findByIdxAndDelete);
 
 module.exports = router;

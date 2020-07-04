@@ -1,28 +1,11 @@
 const { Users } = require("../../models/sql");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const saltRounds = 10;
-const fs = require("fs");
-const path = require("path");
-const privateKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pem"));
-const publicKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pub"));
 
-const idxChecker = (req, res, next) => {
-  const idx = req.params.idx;
-  if (isNaN(idx)) return res.status(400).send("check your idx");
-  next();
-};
-const emailChecker = (email) => {
-  const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-  return re.test(email);
-};
-const passwordChecker = (password) => {
-  // 적어도 1개 이상의 숫자, 특수문자, 영문자로 구성되어 7 ~ 15글자
-  const re = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
-  return re.test(password);
-};
+const emailChecker = require("../../functions").emailChecker;
+const passwordChecker = require("../../functions").passwordChecker;
 
-const register = (req, res, next) => {
+const create = (req, res, next) => {
   var { name, id, password, email, gender, user_type } = req.body;
   // start checking data
   if (!name) return res.status(400).send("enter your name");
@@ -53,86 +36,6 @@ const register = (req, res, next) => {
           .then((user) => res.send(user))
           .catch((err) => next(err));
       });
-    })
-    .catch((err) => next(err));
-};
-
-const getToken = (req, res) => {
-  const { id, password } = req.body;
-
-  if (!id) return res.status(400).send("enter your id");
-  if (!password) return res.status(400).send("enter your password");
-  if (!passwordChecker(password, id))
-    return res.status(400).send("check your password");
-
-  Users.findOne({ where: { id: id } })
-    .then((user) => {
-      if (!user) return res.status(404).send("user not found");
-
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) return res.status(500).send("server error");
-        if (!isMatch) return res.status(403).send("password is incorrect");
-
-        delete user.dataValues["password"];
-        console.log(Object.keys(user.dataValues));
-        const token = jwt.sign(
-          // 만료 시간 : 30분
-          { user, exp: Math.floor(Date.now() / 1000) + 60 * 30 },
-          privateKey,
-          { algorithm: "RS256" }
-        );
-        // res.cookie("token", token, { httpOnly: true });
-        // res.json(result);
-        return res.send(token);
-      });
-    })
-    .catch((err) => next(err));
-};
-
-const tokenCheck = (req, res, next) => {
-  const token = req.token;
-
-  if (!token) return res.status(403).send("Missing Authorization Header");
-
-  // algorithm 체크
-  jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
-    if (err) return next(err);
-    console.log(decoded);
-    return next();
-  });
-};
-
-const logOut = (req, res) => {
-  const token = req.cookies.token;
-
-  jwt.verify(token, publicKey, (err, _id) => {
-    if (err) return res.status(500).send("로그아웃 시 오류가 발생했습니다.");
-    userModel.findByIdAndUpdate(_id, { token: "" }, (err, result) => {
-      if (err) return res.status(500).send("로그아웃 시 오류가 발생했습니다.");
-      res.clearCookie("token");
-      res.redirect("/");
-    });
-  });
-};
-
-///////////////////////////////////////////////////////////////////////////////////
-
-const findAll = (req, res, next) => {
-  const offset = parseInt(req.query.offset || 0, 10);
-  const limit = parseInt(req.query.limit || 10, 10);
-  if (Number.isNaN(limit) || Number.isNaN(offset)) return res.status(400).end(); // 에러는 마음대로 (400 = bad request)
-
-  Users.findAll({
-    attributes: ["idx", "content"],
-    offset: offset,
-    limit: limit,
-  })
-    .then((result) => {
-      if (!result) {
-        res.status(404).send("NotFound");
-      } else {
-        res.send(result);
-      }
     })
     .catch((err) => next(err));
 };
@@ -191,12 +94,8 @@ const findByIdxAndDelete = (req, res, next) => {
 };
 
 module.exports = {
-  idxChecker,
-  register,
-  getToken,
-  tokenCheck,
+  create,
   updateByIdx,
-  findAll,
   findByIdx,
   findByIdxAndDelete,
 };
