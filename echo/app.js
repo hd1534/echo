@@ -3,6 +3,7 @@ var express = require("express");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var fileUpload = require("express-fileupload");
+var bearerToken = require("express-bearer-token");
 // var path = require("path");
 // const swaggerUi = require('swagger-ui-express');  // it will be added someday
 // const swaggerJSDoc = require('swagger-jsdoc');
@@ -27,6 +28,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload());
 app.use(logger("dev"));
 app.use(cookieParser());
+app.use(
+  bearerToken({
+    bodyKey: false,
+    queryKey: false,
+    headerKey: "Bearer",
+    reqKey: false,
+    cookie: false, // by default is disabled
+  })
+);
 
 app.use(require("./api"));
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

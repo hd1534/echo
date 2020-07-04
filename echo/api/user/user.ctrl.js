@@ -81,29 +81,16 @@ const getToken = (req, res) => {
 };
 
 const checkToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.token;
 
-  if (!token) {
-    if (
-      req.url === "/" ||
-      req.url === "/api/user/signup" ||
-      req.url === "/api/user/login"
-    )
-      return next();
-    else return res.redirect("/api/user/login");
-  }
+  if (!token) return res.status(403).send("Missing Authorization Header");
 
   jwt.verify(token, "secretKey", (err, _id) => {
-    if (err) {
-      res.clearCookie("token");
-      return res.render("user/login");
-    }
-    userModel.findOne({ _id, token }, (err, user) => {
-      if (err) return res.status(500).send("인증 시 오류가 발생했습니다.");
-      if (!user) return res.render("user/login");
-      res.locals.user = { name: user.name, role: user.role };
-      return next();
-    });
+    if (err)
+      return res
+        .status(403)
+        .send("Bad Authorization header. Expected value 'Bearer <JWT>'");
+    return next();
   });
 };
 
