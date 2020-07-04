@@ -2,6 +2,10 @@ const { Users } = require("../../models/sql");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
+const fs = require("fs");
+const path = require("path");
+const privateKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pem"));
+const publicKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pub"));
 
 const idxChecker = (req, res, next) => {
   const idx = req.params.idx;
@@ -71,7 +75,12 @@ const getToken = (req, res) => {
 
         delete user.dataValues["password"];
         console.log(Object.keys(user.dataValues));
-        const token = jwt.sign({ user }, "secretKey");
+        const token = jwt.sign(
+          // 만료 시간 : 30분
+          { user, exp: Math.floor(Date.now() / 1000) + 60 * 30 },
+          privateKey,
+          { algorithm: "RS256" }
+        );
         // res.cookie("token", token, { httpOnly: true });
         // res.json(result);
         return res.send(token);
@@ -80,16 +89,15 @@ const getToken = (req, res) => {
     .catch((err) => next(err));
 };
 
-const checkToken = (req, res, next) => {
+const tokenCheck = (req, res, next) => {
   const token = req.token;
 
   if (!token) return res.status(403).send("Missing Authorization Header");
 
-  jwt.verify(token, "secretKey", (err, _id) => {
-    if (err)
-      return res
-        .status(403)
-        .send("Bad Authorization header. Expected value 'Bearer <JWT>'");
+  // algorithm 체크
+  jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
+    if (err) return next(err);
+    console.log(decoded);
     return next();
   });
 };
@@ -97,7 +105,7 @@ const checkToken = (req, res, next) => {
 const logOut = (req, res) => {
   const token = req.cookies.token;
 
-  jwt.verify(token, "secretKey", (err, _id) => {
+  jwt.verify(token, publicKey, (err, _id) => {
     if (err) return res.status(500).send("로그아웃 시 오류가 발생했습니다.");
     userModel.findByIdAndUpdate(_id, { token: "" }, (err, result) => {
       if (err) return res.status(500).send("로그아웃 시 오류가 발생했습니다.");
@@ -186,6 +194,7 @@ module.exports = {
   idxChecker,
   register,
   getToken,
+  tokenCheck,
   updateByIdx,
   findAll,
   findByIdx,

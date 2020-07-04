@@ -57,6 +57,11 @@ app.use(function (err, req, res, next) {
   if (err.name == "SequelizeDatabaseError")
     return res.status(400).send(err.parent.sqlMessage);
 
+  // jwt
+  if (err.name == "TokenExpiredError") return res.status(401).send(err);
+  if (err.name == "JsonWebTokenError") return res.status(401).send(err);
+  if (err.name == "NotBeforeError") return res.status(401).send(err);
+
   // only provi-ding error in development
   res.status(err.status || 500);
   res.send(req.app.get("env") === "development" ? err : "ERROR");
