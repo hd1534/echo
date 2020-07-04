@@ -3,6 +3,7 @@ const router = express.Router();
 
 router.use("/test", require("./test"));
 router.use("/mysql", require("./mysql"));
+router.use("/user", require("./user"));
 router.use("/comment", require("./comment"));
 
 router.use((req, res) => {

@@ -16,19 +16,25 @@ module.exports = function (sequelize, DataTypes) {
       },
       id: {
         type: DataTypes.STRING(50),
-        allowNull: true,
+        unique: true,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING(50),
-        allowNull: true,
+        allowNull: false,
       },
       user_type: {
         type: DataTypes.ENUM("T", "D", "S", "P", "O"),
-        allowNull: true,
+        default: "O",
+        allowNull: false,
       },
       gender: {
-        type: DataTypes.ENUM("M", "F", ""),
-        allowNull: true,
+        type: DataTypes.ENUM("M", "F", "O"),
+        allowNull: false,
       },
     },
     {

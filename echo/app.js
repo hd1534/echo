@@ -43,9 +43,9 @@ app.use(function (err, req, res, next) {
   // instanceof 사용하도록 바꾸기
   // sequelize
   if (err.name == "SequelizeValidationError")
-    res.status(400).send(err.errors.map((err) => err.message));
+    return res.status(400).send(err.errors.map((err) => err.message));
   if (err.name == "SequelizeDatabaseError")
-    res.status(400).send(err.parent.sqlMessage);
+    return res.status(400).send(err.parent.sqlMessage);
 
   // only provi-ding error in development
   res.status(err.status || 500);

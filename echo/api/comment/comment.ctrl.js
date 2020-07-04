@@ -39,7 +39,6 @@ const findByIdx = (req, res, next) => {
       if (!result) {
         res.status(404).send("NotFound");
       } else {
-        console.log(result);
         res.send(result);
       }
     })
@@ -49,12 +48,7 @@ const findByIdx = (req, res, next) => {
 const create = (req, res, next) => {
   Comments.create(req.body, { returning: true })
     .then((result) => {
-      if (!result) {
-        res.status(404).send("NotFound");
-      } else {
-        console.log(result);
-        res.send(result);
-      }
+      res.send(result);
     })
     .catch((err) => next(err));
 };
@@ -69,7 +63,6 @@ const updateByIdx = (req, res, next) => {
       if (!result) {
         res.status(404).send("NotFound");
       } else {
-        console.log(result);
         res.send(result);
       }
     })
