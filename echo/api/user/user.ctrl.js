@@ -8,7 +8,6 @@ const idxChecker = (req, res, next) => {
   if (isNaN(idx)) return res.status(400).send("check your idx");
   next();
 };
-
 const emailChecker = (email) => {
   const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
   return re.test(email);
@@ -19,7 +18,7 @@ const passwordChecker = (password) => {
   return re.test(password);
 };
 
-const signUp = (req, res, next) => {
+const register = (req, res, next) => {
   var { name, id, password, email, gender, user_type } = req.body;
   // start checking data
   if (!name) return res.status(400).send("enter your name");
@@ -54,7 +53,7 @@ const signUp = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const LogIn = (req, res) => {
+const getToken = (req, res) => {
   const { id, password } = req.body;
 
   if (!id) return res.status(400).send("enter your id");
@@ -70,7 +69,8 @@ const LogIn = (req, res) => {
         if (err) return res.status(500).send("server error");
         if (!isMatch) return res.status(403).send("password is incorrect");
 
-        user.password = null;
+        delete user.dataValues["password"];
+        console.log(Object.keys(user.dataValues));
         const token = jwt.sign({ user }, "secretKey");
         // res.cookie("token", token, { httpOnly: true });
         // res.json(result);
@@ -80,10 +80,7 @@ const LogIn = (req, res) => {
     .catch((err) => next(err));
 };
 
-const checkAuth = (req, res, next) => {
-  // 모든 화면에서 공통으로 사용되는 값
-  res.locals.user = null;
-
+const checkToken = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
@@ -200,8 +197,8 @@ const findByIdxAndDelete = (req, res, next) => {
 
 module.exports = {
   idxChecker,
-  signUp,
-  LogIn,
+  register,
+  getToken,
   updateByIdx,
   findAll,
   findByIdx,
