@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "EchoUserTags",
+    "UserTags",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER(11),
         allowNull: false,
         references: {
-          model: "user",
+          model: "users",
           key: "idx",
         },
       },
@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER(11),
         allowNull: false,
         references: {
-          model: "echo_tags",
+          model: "tags",
           key: "idx",
         },
       },
@@ -62,7 +62,7 @@ module.exports = function (sequelize, DataTypes) {
       },
     },
     {
-      tableName: "echo_user_tags",
+      tableName: "user_tags",
     }
   );
 };

@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const ctrl = require("./comments.ctrl");
+const ctrl = require("./user.ctrl");
 
 router.get("/", ctrl.findAll);
 router.post("/", ctrl.create);

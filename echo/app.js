@@ -2,6 +2,7 @@ var createError = require("http-errors");
 var express = require("express");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
+var fileUpload = require("express-fileupload");
 // var path = require("path");
 // const swaggerUi = require('swagger-ui-express');  // it will be added someday
 // const swaggerJSDoc = require('swagger-jsdoc');
@@ -23,6 +24,7 @@ var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload());
 app.use(logger("dev"));
 app.use(cookieParser());
 

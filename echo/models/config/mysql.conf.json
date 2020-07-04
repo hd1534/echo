@@ -1,9 +1,5 @@
 [
   {
-    "model": "AlembicVersion",
-    "file": "alembic_version"
-  },
-  {
     "model": "Comments",
     "file": "comments"
   },
@@ -46,5 +42,21 @@
   {
     "model": "Users",
     "file": "users"
+  },
+  {
+    "model": "Mentions",
+    "file": "mentions"
+  },
+  {
+    "model": "Notifications",
+    "file": "notifications"
+  },
+  {
+    "model": "PostAssessments",
+    "file": "post_assessments"
+  },
+  {
+    "model": "PostReports",
+    "file": "post_reports"
   }
 ]

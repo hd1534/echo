@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       posted_date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        defaultValue: sequelize.fn("NOW"),
       },
       title: {
         type: DataTypes.TEXT,

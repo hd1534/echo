@@ -2,7 +2,7 @@
 
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    "Comments",
+    "PostAssessments",
     {
       idx: {
         type: DataTypes.INTEGER(11),
@@ -18,19 +18,7 @@ module.exports = function (sequelize, DataTypes) {
           key: "idx",
         },
       },
-      target_type: {
-        type: DataTypes.ENUM("post", "comment"),
-        allowNull: false,
-      },
-      target_idx: {
-        type: DataTypes.INTEGER(11),
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.ENUM("normal", "edited", "censored"),
-        allowNull: true,
-      },
-      writer_idx: {
+      user_idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
         references: {
@@ -38,17 +26,17 @@ module.exports = function (sequelize, DataTypes) {
           key: "idx",
         },
       },
-      wrote_date: {
+      assessment: {
+        type: DataTypes.ENUM("like", "dislike", "damn", "WTF"),
+        allowNull: false,
+      },
+      added_date: {
         type: DataTypes.DATE,
         defaultValue: sequelize.fn("NOW"),
       },
-      content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
     },
     {
-      tableName: "comments",
+      tableName: "post_assessments",
     }
   );
 };

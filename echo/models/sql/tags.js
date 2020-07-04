@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       created_date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        defaultValue: sequelize.fn("NOW"),
       },
       description: {
         type: DataTypes.TEXT,

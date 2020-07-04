@@ -13,6 +13,10 @@ module.exports = function (sequelize, DataTypes) {
       user_idx: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
+        references: {
+          model: "users",
+          key: "idx",
+        },
       },
       section: {
         type: DataTypes.STRING(50),
