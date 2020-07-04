@@ -24,6 +24,7 @@ code formatter
 > ## 계획
 >
 > master : 배포된 마지막 버전
+>
 > develop : 개발 최신버전 (테스트 빌드)
 
 ---
