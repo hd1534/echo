@@ -14,6 +14,33 @@ develop
 #info
 node.js
 
+- express
+
 #계획
- - master : 배포된 마지막 버전 
- - develop : 개발 최신버전 (테스트 빌드)
+
+- master : 배포된 마지막 버전
+- develop : 개발 최신버전 (테스트 빌드)
+
+---
+
+## 돌아가고 있는 거 확인하기
+
+> ```
+> docker ps
+> docker logs dev
+> docker logs dev-api.echo.dimigo.in
+> ```
+
+## 도커에 접속해 보기
+
+> ```
+> docker exec -it dev-api.echo.dimigo.in /bin/bash
+> ```
+
+---
+
+참고
+
+```
+jwt에 rs256알고리즘을 사용할건데 키 잘 못만들겠으면 example 쓰셈(로컬에서만)
+```
