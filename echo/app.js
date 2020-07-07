@@ -17,6 +17,7 @@ if (process.env.RUNNIG_ENV != "server") {
     throw result.error;
   }
   console.log(result.parsed);
+} else {
   app.disable("x-powered-by");
 }
 
