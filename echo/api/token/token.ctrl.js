@@ -41,6 +41,7 @@ const getToken = (req, res) => {
 };
 
 const tokenCheck = (req, res, next) => {
+  console.log("tokenCheck");
   const token = req.token;
 
   if (!token) return res.status(403).send("Missing Authorization Header");

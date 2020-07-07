@@ -4,6 +4,8 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var fileUpload = require("express-fileupload");
 var bearerToken = require("express-bearer-token");
+
+var app = express();
 // var path = require("path");
 // const swaggerUi = require('swagger-ui-express');  // it will be added someday
 // const swaggerJSDoc = require('swagger-jsdoc');
@@ -15,13 +17,12 @@ if (process.env.RUNNIG_ENV != "server") {
     throw result.error;
   }
   console.log(result.parsed);
+  app.disable("x-powered-by");
 }
 
 // var mongoDB = require("./mongo").connectMongo(process.env);  설정 다 되어있으니 필요하면 주석해제 할것.
 var sqlDB = require("./models/sql").sequelize;
 sqlDB.sync(); // 테이블 확인 후 동기화 (자동 생성)
-
-var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -3,8 +3,8 @@ var router = express.Router();
 const ctrl = require("./token.ctrl");
 
 // router.get("/", ctrl.findAll);
-router.post("/token", ctrl.getToken);
-router.get("/tokenCheck", ctrl.tokenCheck);
-router.delete("/token", ctrl.revokeToken);
+router.post("/", ctrl.getToken);
+router.delete("/", ctrl.revokeToken);
+router.get("/check", ctrl.tokenCheck);
 
 module.exports = router;

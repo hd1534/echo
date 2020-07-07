@@ -44,7 +44,7 @@ const findByIdx = (req, res, next) => {
   const idx = req.params.idx;
 
   Users.findOne({
-    attributes: ["idx", "content"],
+    attributes: ["idx", "name"],
     where: {
       idx: idx,
     },
@@ -63,7 +63,7 @@ const updateByIdx = (req, res, next) => {
   const idx = req.params.idx;
   Users.update(req.body, {
     where: { idx: idx },
-    fields: ["content"], // fields to update
+    fields: ["name"], // fields to update
   })
     .then((result) => {
       if (!result) {

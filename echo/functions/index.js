@@ -4,6 +4,8 @@ const idxChecker = (req, res, next) => {
   next();
 };
 const emailChecker = (email) => {
+  // 이메일의 길이가 40을 넘기거나 포멧이 맞지 않으면 false
+  if (email.length > 40) return false;
   const re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
   return re.test(email);
 };

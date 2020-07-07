@@ -4,8 +4,8 @@ const ctrl = require("./user.ctrl");
 
 // router.get("/", ctrl.findAll);
 router.post("/", ctrl.create);
-router.get("/", ctrl.findByIdx);
-router.put("/", ctrl.updateByIdx);
-router.delete("/", ctrl.findByIdxAndDelete);
+router.get("/idx/:idx", ctrl.findByIdx);
+router.put("/idx/:idx", ctrl.updateByIdx);
+router.delete("/idx/:idx", ctrl.findByIdxAndDelete);
 
 module.exports = router;
