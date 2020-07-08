@@ -58,6 +58,10 @@ app.use(function (err, req, res, next) {
     return res.status(400).send(err.errors.map((err) => err.message));
   if (err.name == "SequelizeDatabaseError")
     return res.status(400).send(err.parent.sqlMessage);
+  if (err.name == "SequelizeForeignKeyConstraintError")
+    return res
+      .status(400)
+      .send(err.fields[0].replace("_idx", "") + " is not founded");
 
   // jwt
   if (err.name == "TokenExpiredError") return res.status(401).send(err);

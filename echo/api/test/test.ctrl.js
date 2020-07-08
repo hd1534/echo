@@ -14,7 +14,7 @@ const checkId = (req, res, next) => {
 const list = (req, res, next) => {
   const limit = parseInt(req.query.limit || 10, 10);
 
-  if (Number.isNaN(limit)) return res.status(400).end(); // 에러는 마음대로 (400 = bad request)
+  if (Number.isNaN(limit)) return res.status(400).end();
 
   testModel
     .find((err, result) => {

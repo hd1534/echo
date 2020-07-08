@@ -1,3 +1,9 @@
+function partialBind(func, ...argsBound) {
+  return function (...args) {
+    return func.call(this, ...argsBound, ...args);
+  };
+}
+
 const idxChecker = (req, res, next) => {
   const idx = req.params.idx;
   if (isNaN(idx)) return res.status(400).send("check your idx");
@@ -15,4 +21,4 @@ const passwordChecker = (password) => {
   return re.test(password);
 };
 
-module.exports = { idxChecker, emailChecker, passwordChecker };
+module.exports = { partialBind, idxChecker, emailChecker, passwordChecker };

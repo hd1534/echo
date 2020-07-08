@@ -4,6 +4,7 @@ const router = express.Router();
 tokenCheck = require("./token/token.ctrl").tokenCheck;
 
 router.use("/token", require("./token"));
+router.use("/permission", tokenCheck, require("./permission"));
 router.use("/test", tokenCheck, require("./test"));
 router.use("/mysql", tokenCheck, require("./mysql"));
 router.use("/user", tokenCheck, require("./user"));

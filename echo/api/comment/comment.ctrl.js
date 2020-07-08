@@ -9,7 +9,7 @@ const idxChecker = (req, res, next) => {
 const findAll = (req, res, next) => {
   const offset = parseInt(req.query.offset || 0, 10);
   const limit = parseInt(req.query.limit || 10, 10);
-  if (Number.isNaN(limit) || Number.isNaN(offset)) return res.status(400).end(); // 에러는 마음대로 (400 = bad request)
+  if (Number.isNaN(limit) || Number.isNaN(offset)) return res.status(400).end();
 
   Comments.findAll({
     attributes: ["idx", "content"],
