@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-router.use("/test", require("./test"));
-router.use("/mysql", require("./mysql"));
-router.use("/user", require("./user"));
+tokenCheck = require("./token/token.ctrl").tokenCheck;
+
 router.use("/token", require("./token"));
-router.use("/comment", require("./comment"));
+router.use("/test", tokenCheck, require("./test"));
+router.use("/mysql", tokenCheck, require("./mysql"));
+router.use("/user", tokenCheck, require("./user"));
+router.use("/comment", tokenCheck, require("./comment"));
 
 router.use((req, res) => {
   res.send("this is echo back"); // tmp

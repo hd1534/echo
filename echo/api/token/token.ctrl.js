@@ -6,14 +6,12 @@ const path = require("path");
 const privateKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pem"));
 const publicKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pub"));
 
-const passwordChecker = require("../../functions").passwordChecker;
-
 const getToken = (req, res) => {
   const { id, password } = req.body;
 
   if (!id) return res.status(400).send("enter your id");
   if (!password) return res.status(400).send("enter your password");
-  if (!passwordChecker(password, id))
+  if (!require("../../functions").passwordChecker(password, id))
     return res.status(400).send("check your password");
 
   Users.findOne({ where: { id: id } })
@@ -41,7 +39,6 @@ const getToken = (req, res) => {
 };
 
 const tokenCheck = (req, res, next) => {
-  console.log("tokenCheck");
   const token = req.token;
 
   if (!token) return res.status(403).send("Missing Authorization Header");
@@ -56,6 +53,19 @@ const tokenCheck = (req, res, next) => {
         return next();
       })
       .catch((err) => next(err));
+  });
+};
+
+const tokenInfo = (req, res, next) => {
+  const token = req.token;
+
+  if (!token) return res.status(403).send("Missing Authorization Header");
+  console.log("HI");
+
+  jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
+    if (err) return next(err);
+
+    return res.status(200).send(decoded);
   });
 };
 
@@ -76,5 +86,6 @@ const revokeToken = (req, res, next) => {
 module.exports = {
   getToken,
   tokenCheck,
+  tokenInfo,
   revokeToken,
 };
