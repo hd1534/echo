@@ -1,4 +1,5 @@
 const { Permissions } = require("../../models/sql");
+const { Op } = require("sequelize");
 
 const createIfNotExist = (req, res, next) => {
   Permissions.findOne({
@@ -115,16 +116,20 @@ const deleteByIdx = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+// usage : router.use("/admin", tokenCheck, permissionChecker("admin", 10), call_back_fuc);
 const permissionChecker = (section, level) => {
-  if (!section) throw "section is empty";
-  if (!level) throw "level is empty";
-
   return (req, res, next) => {
+    if (!req.decodedJWT)
+      throw "no decoded JWT. you have to check whether using tokenChecker";
+
     Permissions.findOne({
       attributes: ["level"],
       where: {
+        user_idx: req.decodedJWT.user.idx,
         section: section,
-        level: level,
+        level: {
+          [Op.gte]: level, //Greater Than or Equal To
+        },
       },
     })
       .then((result) => {

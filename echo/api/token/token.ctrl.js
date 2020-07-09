@@ -50,6 +50,7 @@ const tokenCheck = (req, res, next) => {
     RevokedTokens.findOne({ where: { jwt: token } })
       .then((result) => {
         if (result) return res.status(403).send("revoked token");
+        req.decodedJWT = decoded;
         return next();
       })
       .catch((err) => next(err));
@@ -60,7 +61,6 @@ const tokenInfo = (req, res, next) => {
   const token = req.token;
 
   if (!token) return res.status(403).send("Missing Authorization Header");
-  console.log("HI");
 
   jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, decoded) => {
     if (err) return next(err);
