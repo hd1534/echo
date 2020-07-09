@@ -40,6 +40,12 @@ app.use(
   })
 );
 
+if (process.env.RUNNIG_ENV == "server") {
+  app.all("*", (req, res) => {
+    if (!req.secure) res.status(405).send("https only");
+  });
+}
+
 app.use(require("./api"));
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
