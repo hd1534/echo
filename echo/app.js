@@ -7,9 +7,8 @@ var bearerToken = require("express-bearer-token");
 
 var app = express();
 // var path = require("path");
-// const swaggerUi = require('swagger-ui-express');  // it will be added someday
-// const swaggerJSDoc = require('swagger-jsdoc');
-// const swaggerDocument = require('./swagger.json');
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger")();
 
 if (process.env.RUNNIG_ENV != "server") {
   var result = require("dotenv").config({ path: "../.env" });
@@ -41,7 +40,22 @@ app.use(
 );
 
 app.use(require("./api"));
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// swagger
+app.use(
+  "/api-docs",
+  function (req, res, next) {
+    swaggerDocument.host = req.get("host");
+    req.swaggerDoc = swaggerDocument;
+    next();
+  },
+  swaggerUi.serve,
+  swaggerUi.setup()
+);
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
