@@ -3,6 +3,7 @@ tags:
     description: "token method"
     externalDocs:
       description: "JWT"
+      url: "https://echo.dimigo.in/"
 paths:
   /token:
     post:

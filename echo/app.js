@@ -18,7 +18,7 @@ if (process.env.RUNNIG_ENV != "server") {
   app.disable("x-powered-by");
 }
 
-// var mongoDB = require("./mongo").connectMongo(process.env);  설정 다 되어있으니 필요하면 주석해제 할것.
+var mongoDB = require("./mongo").connectMongo();
 var sqlDB = require("./models/sql").sequelize;
 sqlDB.sync(); // 테이블 확인 후 동기화 (자동 생성)
 

@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 
-module.exports.connectMongo = (env) => {
+module.exports.connectMongo = () => {
+  env = process.env;
   var options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,

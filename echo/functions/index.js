@@ -4,11 +4,6 @@ function partialBind(func, ...argsBound) {
   };
 }
 
-const idxChecker = (req, res, next) => {
-  const idx = req.params.idx;
-  if (isNaN(idx)) return res.status(400).send("check your idx");
-  next();
-};
 const emailChecker = (email) => {
   // 이메일의 길이가 40을 넘기거나 포멧이 맞지 않으면 false
   if (email.length > 40) return false;
@@ -23,7 +18,6 @@ const passwordChecker = (password) => {
 
 module.exports = {
   partialBind,
-  idxChecker,
   emailChecker,
   passwordChecker,
 };
