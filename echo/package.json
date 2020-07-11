@@ -31,7 +31,10 @@
     "xss": "^1.0.7"
   },
   "devDependencies": {
+    "@alt3/sequelize-to-json-schemas": "^0.3.50",
     "husky": "^4.2.5",
+    "json-to-pretty-yaml": "^1.2.2",
+    "mongoose-to-swagger": "^1.0.3",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1"
   }
