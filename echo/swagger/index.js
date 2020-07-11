@@ -1,5 +1,4 @@
 const swaggerJSDoc = require("swagger-jsdoc");
-var path = require("path");
 
 const swaggerDefinition = {
   swagger: "2.0",
@@ -14,24 +13,7 @@ const swaggerDefinition = {
   host: "/",
   schemes: process.env.RUNNIG_ENV == "server" ? "https" : "http",
 
-  tags: ["test"],
-
-  securityDefinitions: {
-    tokenstore_auth: {
-      type: "oauth2",
-      authorizationUrl: "http://tokenstore.swagger.io/oauth/dialog",
-      flow: "implicit",
-      scopes: {
-        "write:tokens": "modify tokens in your account",
-        "read:tokens": "read your tokens",
-      },
-    },
-    api_key: {
-      type: "apiKey",
-      name: "api_key",
-      in: "header",
-    },
-  },
+  securityDefinitions: {},
 
   externalDocs: {
     description: "Find out more about Swagger",
@@ -41,10 +23,11 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [__dirname + "/*"],
+  apis: [__dirname + "/*.yaml", __dirname + "/*/*.yaml"],
 };
 
+console.log(swaggerJSDoc(options));
+
 module.exports = () => {
-  console.log(swaggerJSDoc(options));
   return swaggerJSDoc(options);
 };

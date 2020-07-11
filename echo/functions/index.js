@@ -21,4 +21,9 @@ const passwordChecker = (password) => {
   return re.test(password);
 };
 
-module.exports = { partialBind, idxChecker, emailChecker, passwordChecker };
+module.exports = {
+  partialBind,
+  idxChecker,
+  emailChecker,
+  passwordChecker,
+};

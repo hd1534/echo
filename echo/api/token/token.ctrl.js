@@ -6,7 +6,7 @@ const path = require("path");
 const privateKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pem"));
 const publicKey = fs.readFileSync(path.resolve(__dirname, "../../rs256.pub"));
 
-const getToken = (req, res) => {
+const getToken = (req, res, next) => {
   const { id, password } = req.body;
 
   if (!id) return res.status(400).send("enter your id");

@@ -58,6 +58,8 @@ app.use(function (err, req, res, next) {
     return res
       .status(400)
       .send(err.fields[0].replace("_idx", "") + " is not founded");
+  if (err.name == "SequelizeConnectionRefusedError")
+    return res.status(500).send("sql server error");
 
   // jwt
   if (err.name == "TokenExpiredError") return res.status(401).send(err);

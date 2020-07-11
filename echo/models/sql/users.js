@@ -11,11 +11,11 @@ module.exports = function (sequelize, DataTypes) {
         autoIncrement: true,
       },
       name: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(20),
         allowNull: false,
       },
       id: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(20),
         unique: true,
         allowNull: false,
       },
