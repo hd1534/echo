@@ -1,3 +1,5 @@
+const mongoErr = require("mongoose").Error;
+
 var createError = require("http-errors");
 var express = require("express");
 var logger = require("morgan");
@@ -49,6 +51,12 @@ app.use(function (err, req, res, next) {
   console.error(err);
 
   // instanceof 사용하도록 바꾸기
+
+  // jwt
+  if (err.name == "TokenExpiredError") return res.status(401).send(err);
+  if (err.name == "JsonWebTokenError") return res.status(401).send(err);
+  if (err.name == "NotBeforeError") return res.status(401).send(err);
+
   // sequelize
   if (err.name == "SequelizeValidationError")
     return res.status(400).send(err.errors.map((err) => err.message));
@@ -61,10 +69,11 @@ app.use(function (err, req, res, next) {
   if (err.name == "SequelizeConnectionRefusedError")
     return res.status(500).send("sql server error");
 
-  // jwt
-  if (err.name == "TokenExpiredError") return res.status(401).send(err);
-  if (err.name == "JsonWebTokenError") return res.status(401).send(err);
-  if (err.name == "NotBeforeError") return res.status(401).send(err);
+  // mongoose
+  if (err instanceof mongoErr) {
+    return res.status(400).send(err);
+    return res.status(400).send("db error");
+  }
 
   // only provi-ding error in development
   res.status(err.status || 500);

@@ -26,9 +26,9 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      post_id: {
+        type: DataTypes.STRING(100),
+        allowNull: true, // 삭제된 경우 null
       },
     },
     {

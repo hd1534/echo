@@ -1,51 +1,84 @@
+const xss = require("xss");
 const mongoose = require("mongoose");
 
-const Writer = new mongoose.Schema({
-  name: {
+const CommentSchema = new mongoose.Schema();
+CommentSchema.add({
+  title: {
     type: String,
     required: true,
+    set: xss,
   },
-  idx: {
-    type: Number,
+  comment: {
+    type: String,
     required: true,
+    set: xss,
   },
-});
-const Comments = new mongoose.Schema();
-Comments.add({
-  title: String,
-  comment: String,
-  writer: Writer,
-  subComments: [Comments],
+  writer: {
+    idx: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  subComments: [CommentSchema],
 });
 
-// 스키마 정의
 const PostSchema = new mongoose.Schema({
-  writer: Writer,
+  // tags: {type:[{name: String, idx: Number}],required:true},  // will be added
+  writer: {
+    type: {
+      idx: {
+        type: Number,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+    },
+    required: [true, "writer is empty"],
+  },
+  title: {
+    type: String,
+    required: [true, "title is empty"],
+    set: xss,
+  },
+  content: {
+    type: String,
+    required: [true, "content is empty"],
+    set: xss,
+  },
+  status: {
+    type: String,
+    enum: ["normal", "censored"],
+    default: "normal",
+  },
   date: {
     type: Date,
     default: Date.now,
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  post: {
-    type: String,
-    required: true, // 필수 항목인가?
-  },
-  comments: [Comments],
+  comments: [CommentSchema],
   meta: {
     likes: {
       type: Number,
       default: 0,
     },
   },
-  liked_people: [{ idx: Number }],
+  liked_people_idxs: {
+    type: [Number],
+    set: (v) => {
+      // need to change. it's not working like what i expected
+      if (this instanceof mongoose.Document && v != null) {
+        this.meta.likes = v.length;
+      }
+      return v;
+    },
+  },
 });
 
-// 모델 생성
-// model(모델명, 스키마) -> 모델명s 컬렉션을 없으면 자동으로 만들어 작업함
-// model(모델명, 스키마, 컬렉션명) -> 명시된 컬렉션명으로 작업함.
-const Post = mongoose.model("post", PostSchema); // posts 스키마가 만들어짐
+const Post = mongoose.model("post", PostSchema);
 
 module.exports = Post;
