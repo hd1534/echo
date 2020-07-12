@@ -78,7 +78,7 @@
       });
     </script>
     <% } else { %> <% if (result.liked_people_idxs.includes(user.idx)) { %>
-    <button id="likeBtn" type="button" class="btn btn-danger">
+    <button id="unLikeBtn" type="button" class="btn btn-danger">
       좋아요 취소 <% } else { %>
       <button id="likeBtn" type="button" class="btn btn-primary">
       좋아요 <% } %>
@@ -89,20 +89,34 @@
       $(function () {
         $("#likeBtn").on("click", () => {
           event.preventDefault();
-          if (confirm("삭제하시겠습니까?")) {
             $.ajax({
               url: "/post/_id/<%= result._id %>/like",
-              type: "DELETE",
+              type: "GET",
             })
               .done(() => {
-                location.href = "/post";
+                window.location.reload()
               })
               .fail((request, status, error) => {
                 alert(request.responseText);
               });
-          } else {
-            // 취소
-          }
+        });
+      });
+    </script>
+    
+    <script>
+      $(function () {
+        $("#unLikeBtn").on("click", () => {
+          event.preventDefault();
+            $.ajax({
+              url: "/post/_id/<%= result._id %>/unlike",
+              type: "GET",
+            })
+              .done(() => {
+                window.location.reload()
+              })
+              .fail((request, status, error) => {
+                alert(request.responseText);
+              });
         });
       });
     </script>

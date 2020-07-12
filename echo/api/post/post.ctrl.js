@@ -196,12 +196,55 @@ const showDetailPage = (req, res, next) => {
   });
 };
 
+const like = (req, res, next) => {
+  const _id = req.params._id;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(400).send("_id is invalid");
+
+  post = postModel.findById(_id, (err, post) => {
+    if (err) next(err);
+    if (!post) return res.status(404).send("NotFound");
+
+    if (!post.liked_people_idxs.includes(req.decodedJWT.user.idx)) {
+      post.liked_people_idxs.push(req.decodedJWT.user.idx);
+      post
+        .save()
+        .then((post) => res.status(202).send())
+        .catch((err) => next(err));
+    }
+    return res.status(202).send();
+  });
+};
+
+const unlike = (req, res, next) => {
+  const _id = req.params._id;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(400).send("_id is invalid");
+
+  post = postModel.findById(_id, (err, post) => {
+    if (err) next(err);
+    if (!post) return res.status(404).send("NotFound");
+
+    post.liked_people_idxs = post.liked_people_idxs.filter(
+      (e) => e !== req.decodedJWT.user.idx
+    );
+    post
+      .save()
+      .then((post) => res.status(202).send())
+      .catch((err) => next(err));
+  });
+};
+
 module.exports = {
   list,
   detail,
   create,
   update,
   remove,
+  like,
+  unlike,
   showListPage,
   showDetailPage,
   showCreatePage,

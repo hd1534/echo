@@ -90,7 +90,7 @@ const PostSchema = new mongoose.Schema({
     type: [Number],
     set: (v) => {
       // need to change. it's not working like what i expected
-      if (this instanceof mongoose.Document && v != null) {
+      if (this.meta && v != null) {
         this.meta.likes = v.length;
       }
       return v;
