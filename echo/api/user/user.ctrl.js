@@ -29,6 +29,10 @@ const showProfilePage = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const showUpdatePage = (req, res, next) => {
+  res.render("user/update");
+};
+
 const create = (req, res, next) => {
   var { name, id, password, email, gender, user_type } = req.body;
   // start checking data
@@ -87,7 +91,7 @@ const updateByIdx = (req, res, next) => {
   const idx = req.params.idx;
   Users.update(req.body, {
     where: { idx: idx },
-    fields: ["name"], // fields to update
+    fields: ["name", "email"], // fields to update
   })
     .then((result) => {
       if (!result) {
@@ -121,6 +125,7 @@ module.exports = {
   showLoginPage,
   showSignUpPage,
   showProfilePage,
+  showUpdatePage,
   create,
   updateByIdx,
   findByIdx,

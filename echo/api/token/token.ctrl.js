@@ -147,7 +147,7 @@ const checkAuth = (req, res, next) => {
   jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, user) => {
     if (err) {
       res.clearCookie("token");
-      return res.render("user/login");
+      return res.redirect("user/login");
     }
     req.decodedJWT = user;
     res.locals.user = user.user;

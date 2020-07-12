@@ -25,6 +25,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       email: {
         type: DataTypes.STRING(50),
+        unique: true,
         allowNull: false,
       },
       user_type: {
