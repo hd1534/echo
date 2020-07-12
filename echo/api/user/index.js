@@ -6,6 +6,7 @@ const { tokenCheck, logOut, logIn } = require("../token/token.ctrl");
 // router.get("/", ctrl.findAll);
 router.get("/signup", ctrl.showSignUpPage); // 회원가입 페이지
 router.get("/login", ctrl.showLoginPage); // 로그인 페이지
+router.get("/profile", ctrl.showProfilePage);
 router.get("/logout", logOut);
 router.post("/signup", ctrl.create); // 회원가입
 router.post("/login", logIn); // 로그인

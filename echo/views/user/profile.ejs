@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../header"); -%>
+  <!-- 불러오기 -->
+
+  <body>
+    <%- include("../menu"); -%>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron p-0">
+      <!-- Card image -->
+      <div class="view overlay rounded-top">
+        <img
+          src="https://c0.wallpaperflare.com/preview/61/274/460/astronaut-moon-space-nasa.jpg"
+          class="img-fluid"
+          alt="ferrari fxxk"
+          style="width: 100%;"
+        />
+        <a href="#">
+          <div class="mask rgba-white-slight">
+            <%= result.name %>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- Jumbotron -->
+
+    <%- include("../footer.ejs"); -%>
+  </body>
+</html>

@@ -13,6 +13,22 @@ const showLoginPage = (req, res) => {
   res.render("user/login");
 };
 
+const showProfilePage = (req, res, next) => {
+  Users.findOne({
+    where: {
+      idx: req.decodedJWT.user.idx,
+    },
+  })
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("NotFound");
+      } else {
+        res.render("user/profile", { result });
+      }
+    })
+    .catch((err) => next(err));
+};
+
 const create = (req, res, next) => {
   var { name, id, password, email, gender, user_type } = req.body;
   // start checking data
@@ -104,6 +120,7 @@ const findByIdxAndDelete = (req, res, next) => {
 module.exports = {
   showLoginPage,
   showSignUpPage,
+  showProfilePage,
   create,
   updateByIdx,
   findByIdx,
