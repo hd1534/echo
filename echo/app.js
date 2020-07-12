@@ -6,9 +6,9 @@ var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var fileUpload = require("express-fileupload");
 var bearerToken = require("express-bearer-token");
+var path = require("path");
 
 var app = express();
-// var path = require("path");
 
 if (process.env.RUNNIG_ENV != "server") {
   var result = require("dotenv").config({ path: "../.env" });
@@ -39,7 +39,12 @@ app.use(
   })
 );
 
-app.use(require("./api"));
+// front setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(express.static("static"));
+app.use("/", require("./api/token/token.ctrl").checkAuth);
+app.use("/", require("./api"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("../header"); -%>  <!-- 불러오기 -->
+
+<body> 
+  <%- include("../menu"); -%>
+
+  <form id = "createForm">
+    <div class="md-form">
+        <input
+            type="text"
+            id="title"
+            class="form-control"
+            value="<%= result.title %>"
+            required
+        />
+        <label for="title">Title</label>
+    </div>
+    <div class="md-form">
+        <input
+        type="text"
+        id="director"
+        class="form-control"
+        value="<%= result.director %>"
+        required
+        />
+        <label for="director">Director</label>
+    </div>
+    <div class="md-form">
+        <input
+        type="text"
+        id="year"
+        class="form-control"
+        value="<%= result.year %>"
+        required
+        />
+        <label for="year">Year</label>
+    </div>
+    <button type="submit" class = "btn btn-primary">저장</button>
+</form>
+
+    <%- include("../footer.ejs"); -%>
+
+    <script>
+        $(function () {
+            $("#createForm").submit((event) => {
+                event.preventDefault();
+
+                const title = $("#title").val();
+                const director = $("#director").val();
+                const year = $("#year").val();
+
+                $.ajax({
+                    url: "/api/movie/id/<%= result._id %>",
+                    type: "PUT",
+                    data: { title, director, year }
+                }).done(() => {
+                    location.href = "/api/movie/id/<%= result._id %>";
+                }).fail((request, status, error) => {
+                    alert(request.responseText);
+                })
+                
+            });
+        });
+    </script>
+
+
+
+</body>
+</html>

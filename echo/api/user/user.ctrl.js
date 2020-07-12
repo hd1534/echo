@@ -5,6 +5,14 @@ const saltRounds = 10;
 const emailChecker = require("../../functions").emailChecker;
 const passwordChecker = require("../../functions").passwordChecker;
 
+const showSignUpPage = (req, res) => {
+  res.render("user/signup");
+};
+
+const showLoginPage = (req, res) => {
+  res.render("user/login");
+};
+
 const create = (req, res, next) => {
   var { name, id, password, email, gender, user_type } = req.body;
   // start checking data
@@ -94,6 +102,8 @@ const findByIdxAndDelete = (req, res, next) => {
 };
 
 module.exports = {
+  showLoginPage,
+  showSignUpPage,
   create,
   updateByIdx,
   findByIdx,

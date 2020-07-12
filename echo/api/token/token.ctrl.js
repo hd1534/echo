@@ -11,7 +11,7 @@ const getToken = (req, res, next) => {
 
   if (!id) return res.status(400).send("enter your id");
   if (!password) return res.status(400).send("enter your password");
-  if (!require("../../functions").passwordChecker(password, id))
+  if (!require("../../functions").passwordChecker(password))
     return res.status(400).send("check your password");
 
   Users.findOne({ where: { id: id } })
@@ -23,7 +23,6 @@ const getToken = (req, res, next) => {
         if (!isMatch) return res.status(403).send("password is incorrect");
 
         delete user.dataValues["password"];
-        console.log(Object.keys(user.dataValues));
         const token = jwt.sign(
           // 만료 시간 : 30분
           { user, exp: Math.floor(Date.now() / 1000) + 60 * 30 },
@@ -32,7 +31,8 @@ const getToken = (req, res, next) => {
         );
         // res.cookie("token", token, { httpOnly: true });
         // res.json(result);
-        return res.send(token);
+        res.cookie("user", JSON.stringify(user), { httpOnly: true });
+        return res.status(200).send(user);
       });
     })
     .catch((err) => next(err));
@@ -83,7 +83,82 @@ const revokeToken = (req, res, next) => {
   });
 };
 
+const logIn = (req, res) => {
+  const { id, password } = req.body;
+
+  if (!id) return res.status(400).send("id를 입력해주세요");
+  if (!password) return res.status(400).send("비밀번호를 입력해주세요");
+  if (!require("../../functions").passwordChecker(password, id))
+    return res.status(400).send("비밀번호가 형식에 맞지 않습니다.");
+
+  Users.findOne({ where: { id: id } })
+    .then((user) => {
+      if (!user) return res.status(404).send("없는 계정 입니다.");
+
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) return res.status(500).send("로그인중 서버에러");
+        if (!isMatch) return res.status(403).send("비밀번호가 틀립니다.");
+
+        const token = jwt.sign(
+          // 만료 시간 : 30분
+          { user, exp: Math.floor(Date.now() / 1000) + 60 * 30 },
+          privateKey,
+          { algorithm: "RS256" }
+        );
+        res.cookie("token", token, { httpOnly: true });
+        res.json(token);
+      });
+    })
+    .catch((err) => next(err));
+};
+const logOut = (req, res) => {
+  const token = req.cookies.token;
+
+  jwt.verify(token, publicKey, (err, decoded) => {
+    if (err) return res.status(500).send("로그아웃 시 오류가 발생했습니다.");
+
+    RevokedTokens.create({ jwt: token })
+      .then((RevokedToken) => {
+        res.clearCookie("token");
+        res.redirect("/");
+      })
+      .catch((err) => res.status(500).send("로그아웃 시 오류가 발생했습니다."));
+  });
+};
+
+const checkAuth = (req, res, next) => {
+  // 모든 화면에서 공통으로 사용되는 값
+  res.locals.user = null;
+
+  const token = req.cookies.token;
+
+  if (!token) {
+    if (
+      req.url === "/" ||
+      req.url === "/user" ||
+      req.url === "/user/signup" ||
+      req.url === "/user/login"
+    )
+      return next();
+    console.log("not allowed : " + req.url);
+    return res.redirect("/user/login");
+  }
+
+  jwt.verify(token, publicKey, { algorithms: ["RS256"] }, (err, user) => {
+    if (err) {
+      res.clearCookie("token");
+      return res.render("user/login");
+    }
+    req.decodedJWT = user;
+    res.locals.user = user.user;
+    next();
+  });
+};
+
 module.exports = {
+  logIn,
+  logOut,
+  checkAuth,
   getToken,
   tokenCheck,
   tokenInfo,

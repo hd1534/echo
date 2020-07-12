@@ -8,15 +8,15 @@ const { permissionChecker } = require("./permission/permission.ctrl");
 
 router.use("/token", require("./token"));
 router.use("/user", require("./user"));
-router.use("/permission", tokenCheck, require("./permission"));
-router.use("/post", tokenCheck, require("./post"));
-router.use("/admin", tokenCheck, permissionChecker("admin", 10), (req, res) => {
+router.use("/permission", require("./permission"));
+router.use("/post", require("./post"));
+router.use("/admin", permissionChecker("admin", 10), (req, res) => {
   res.send("hi admin!"); // tmp
 });
 
 // swagger
 router.use(
-  "/api-docs",
+  "/docs",
   function (req, res, next) {
     swaggerDocument.host = req.get("host");
     req.swaggerDoc = swaggerDocument;
@@ -30,8 +30,9 @@ router.get("/api-docs.json", (req, res) => {
   res.send(swaggerSpec);
 });
 
-router.use((req, res) => {
-  res.send("this is echo back"); // tmp
+router.get("/", (req, res) => {
+  console.log(res.locals);
+  return res.render("index");
 });
 
 module.exports = router;

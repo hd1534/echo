@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../header"); -%>
+  <!-- 불러오기 -->
+
+  <body>
+    <%- include("../menu"); -%>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      onclick="location.href='/post/new'"
+    >
+      추가
+    </button>
+
+    <!-- Card deck -->
+    <div class="row row-cols-1 row-cols-md-4">
+      <% result.forEach(post => { %>
+
+      <!-- Card -->
+      <div class="card mb-4">
+        <!--Card image-->
+        <div class="view overlay">
+          <img class="card-img-top" src= "<%= post.img_url %>"" alt="post image
+          cap" />
+          <a href="#!">
+            <div class="mask rgba-white-slight"></div>
+          </a>
+        </div>
+
+        <!--Card content-->
+        <div class="card-body">
+          <!--Title-->
+          <h4 class="card-director"><%= post.title %></h4>
+          <!--Text-->
+          <p class="card-text">작성자 : <%= post.writer.name %></br>
+            작성일 : <%= post.date.toISOString().replace(/T/, ' ').
+            replace(/\..+/, '') %></br>
+            좋아요 : <%= post.meta.likes %></p>
+          <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+          <button
+            type="button"
+            class="btn btn-light-blue btn-md"
+            onclick="location.href='/post/_id/<%=post._id%>/detail'"
+          >
+            자세히 보기
+          </button>
+        </div>
+      </div>
+      <!-- Card -->
+
+      <% }) %>
+    </div>
+    <!-- Card deck -->
+
+    <%- include("../footer.ejs"); -%>
+  </body>
+</html>

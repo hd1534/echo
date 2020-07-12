@@ -14,7 +14,8 @@ const list = (req, res, next) => {
       // res.json(result);
       res.json(result);
     })
-    .limit(limit);
+    .limit(limit)
+    .sort({ date: -1 });
 };
 
 const detail = (req, res, next) => {
@@ -33,21 +34,28 @@ const detail = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
-  const { title, content, comments, liked_people_idxs } = req.body;
+  var post = null;
+  const { title, content, img_url } = req.body;
   writer = {
     idx: req.decodedJWT.user.idx,
     name: req.decodedJWT.user.name,
   };
 
   // Document.save() 방식
-  const post = new postModel({
-    writer,
-    title,
-    content,
-    comments,
-    liked_people_idxs,
-  });
-
+  if (img_url) {
+    post = new postModel({
+      writer,
+      title,
+      img_url,
+      content,
+    });
+  } else {
+    post = new postModel({
+      writer,
+      title,
+      content,
+    });
+  }
   post.save((mongoErr, result) => {
     if (mongoErr) return next(mongoErr);
 
@@ -124,4 +132,64 @@ const remove = (req, res, next) => {
   });
 };
 
-module.exports = { list, detail, create, update, remove };
+const showListPage = (req, res) => {
+  const limit = parseInt(req.query.limit || 10, 10);
+
+  if (Number.isNaN(limit)) return res.status(400).send("limit must be number");
+
+  postModel
+    .find((err, result) => {
+      if (err) next(err); // 직접 처리해도 됨
+
+      // res.json(result);
+      res.render("post/list", { result });
+    })
+    .limit(limit)
+    .sort({ date: -1 });
+};
+
+const showCreatePage = (req, res) => {
+  res.render("post/create");
+};
+
+const showUpdatePage = (req, res) => {
+  const _id = req.params._id;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(400).send("_id is invalid");
+
+  result = postModel.findById(_id, (err, result) => {
+    if (err) next(err);
+
+    if (!result) return res.status(404).send("NotFound");
+
+    res.render("post/update", { result });
+  });
+};
+
+const showDetailPage = (req, res, next) => {
+  const _id = req.params._id;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(400).send("_id is invalid");
+
+  result = postModel.findById(_id, (err, result) => {
+    if (err) next(err);
+
+    if (!result) return res.status(404).send("NotFound");
+
+    res.render("post/detail", { result });
+  });
+};
+
+module.exports = {
+  list,
+  detail,
+  create,
+  update,
+  remove,
+  showListPage,
+  showDetailPage,
+  showCreatePage,
+  showUpdatePage,
+};
