@@ -6,20 +6,12 @@
   <body>
     <%- include("../menu"); -%>
 
-    <button
-      type="button"
-      class="btn btn-primary"
-      onclick="location.href='/post/new'"
-    >
-      글쓰기
-    </button>
-
     <!-- Card deck -->
-    <div class="row row-cols-1 row-cols-md-4">
+    <div class="row row-cols-1 row-cols-md-4 justify-content-center" style="width: 100%;">
       <% result.forEach(post => { %>
 
       <!-- Card -->
-      <div class="card mb-4">
+      <div class="card mt-3 mb-2 mr-3, ml-3">
         <!--Card image-->
         <div class="view overlay">
           <img class="card-img-top" src= "<%= post.img_url %>"" alt="post image
@@ -28,9 +20,9 @@
             <div class="mask rgba-white-slight"></div>
           </a>
         </div>
-
+          
         <!--Card content-->
-        <div class="card-body">
+        <div class="card-body align-bottom">
           <!--Title-->
           <h4 class="card-director"><%= post.title %></h4>
           <!--content-->
@@ -63,23 +55,26 @@
       <% }) %>
     </div>
     <!-- Card deck -->
+    <div class="d-flex justify-content-between">
     <% if (offset != 0) { %>
-    <button
-      type="button"
-      class="btn btn-primary"
-      onclick="location.href='/post/list?offset=<%= offset - limit %>&limit=<%= limit %>'"
-    >
-    이전 페이지
-    </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="location.href='/post/list?offset=<%= offset - limit %>&limit=<%= limit %>'"
+        >
+        이전 페이지
+        </button>
+        <% } else { %>
+          <div></div>
     <% } %>
-    <button
-      type="button"
-      class="btn btn-primary"
-      onclick="location.href='/post/list?offset=<%= offset + limit%>&limit=<%= limit %>'"
-    >
-    다음 페이지
-    </button>
-
-    <%- include("../footer.ejs"); -%>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="location.href='/post/list?offset=<%= offset + limit%>&limit=<%= limit %>'"
+        >
+        다음 페이지
+        </button>
+        <%- include("../footer.ejs"); -%>
+      </div>
   </body>
 </html>

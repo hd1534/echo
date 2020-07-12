@@ -140,12 +140,13 @@ const remove = (req, res, next) => {
 };
 
 const showListPage = (req, res, next) => {
-  var limit = parseInt(req.query.limit || 10, 10);
+  var limit = parseInt(req.query.limit || 12, 10);
   var offset = parseInt(req.query.offset || 0, 10);
 
-  if (Number.isNaN(limit)) limit = 10;
+  if (Number.isNaN(limit)) limit = 12;
   if (Number.isNaN(offset)) offset = 0;
   if (offset < 0) offset = 0;
+  console.log(limit);
 
   postModel
     .find((err, result) => {
