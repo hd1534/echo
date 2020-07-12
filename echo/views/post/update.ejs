@@ -1,71 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+  <%- include("../header"); -%>
+  <!-- 불러오기 -->
 
-<%- include("../header"); -%>  <!-- 불러오기 -->
+  <body>
+    <%- include("../menu"); -%>
 
-<body> 
-  <%- include("../menu"); -%>
+    <form id="updateForm">
+      <div class="md-form">
+        <input
+          type="text"
+          id="title"
+          class="form-control"
+          value="<%= result.title %>"
+          required
+        />
+        <label for="title">제목</label>
+      </div>
 
-  <form id = "createForm">
-    <div class="md-form">
+      <div class="md-form">
         <input
-            type="text"
-            id="title"
-            class="form-control"
-            value="<%= result.title %>"
-            required
+          type="text"
+          id="content"
+          class="form-control"
+          value="<%= result.content %>"
+          required
         />
-        <label for="title">Title</label>
-    </div>
-    <div class="md-form">
+        <label for="content">내용</label>
+      </div>
+      <div class="md-form">
         <input
-        type="text"
-        id="director"
-        class="form-control"
-        value="<%= result.director %>"
-        required
+          type="text"
+          id="img_url"
+          class="form-control"
+          value="<%= result.img_url %>"
         />
-        <label for="director">Director</label>
-    </div>
-    <div class="md-form">
-        <input
-        type="text"
-        id="year"
-        class="form-control"
-        value="<%= result.year %>"
-        required
-        />
-        <label for="year">Year</label>
-    </div>
-    <button type="submit" class = "btn btn-primary">저장</button>
-</form>
+        <label for="img_url">이미지 주소</label>
+      </div>
+      <button type="submit" class="btn btn-primary">수정</button>
+    </form>
 
     <%- include("../footer.ejs"); -%>
 
     <script>
-        $(function () {
-            $("#createForm").submit((event) => {
-                event.preventDefault();
+      $(function () {
+        $("#updateForm").submit((event) => {
+          event.preventDefault();
 
-                const title = $("#title").val();
-                const director = $("#director").val();
-                const year = $("#year").val();
+          const title = $("#title").val();
+          const content = $("#content").val();
+          const img_url = $("#img_url").val();
 
-                $.ajax({
-                    url: "/api/movie/id/<%= result._id %>",
-                    type: "PUT",
-                    data: { title, director, year }
-                }).done(() => {
-                    location.href = "/api/movie/id/<%= result._id %>";
-                }).fail((request, status, error) => {
-                    alert(request.responseText);
-                })
-                
+          $.ajax({
+            url: "/post/_id/<%= result._id %>",
+            type: "PUT",
+            data: { title, content, img_url },
+          })
+            .done(() => {
+              location.href = "/post/_id/<%= result._id %>/detail";
+            })
+            .fail((request, status, error) => {
+              alert(request.responseText);
             });
         });
+      });
     </script>
-
-
-
-</body>
+  </body>
 </html>

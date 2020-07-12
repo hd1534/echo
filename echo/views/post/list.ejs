@@ -11,7 +11,7 @@
       class="btn btn-primary"
       onclick="location.href='/post/new'"
     >
-      추가
+      글쓰기
     </button>
 
     <!-- Card deck -->
@@ -33,12 +33,11 @@
         <div class="card-body">
           <!--Title-->
           <h4 class="card-director"><%= post.title %></h4>
+          <!--content-->
+          <h6 class="card-director"><%= post.content %></h6>
           <!--Text-->
           <p class="card-text">작성자 : <%= post.writer.name %></br>
-            작성일 : <%= post.date.toISOString().replace(/T/, ' ').
-            replace(/\..+/, '') %></br>
-            좋아요 : <%= post.meta.likes %></p>
-          <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+                      <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
           <button
             type="button"
             class="btn btn-light-blue btn-md"
@@ -47,12 +46,39 @@
             자세히 보기
           </button>
         </div>
+        <!-- Card footer -->
+  <div class="rounded-bottom mdb-color lighten-3 text-center pt-3">
+    <ul class="list-unstyled list-inline font-small">
+      <li class="list-inline-item pr-2 white-text"><i class="far fa-clock pr-1"></i><%=post.date.toISOString().replace(/T/, ' ').
+        replace(/\..+/, '')%></li>
+      <li class="list-inline-item pr-2"><a href="#" class="white-text"><i
+            class="far fa-comments pr-1"></i><%= post.comments.length %></a></li>
+      <li class="list-inline-item"><a href="#" class="white-text"> 작성자 : <%= post.writer.name %></a> </li>
+    </ul>
+  </div>
       </div>
       <!-- Card -->
+      
 
       <% }) %>
     </div>
     <!-- Card deck -->
+    <% if (offset != 0) { %>
+    <button
+      type="button"
+      class="btn btn-primary"
+      onclick="location.href='/post/list?offset=<%= offset - limit %>&limit=<%= limit %>'"
+    >
+    이전 페이지
+    </button>
+    <% } %>
+    <button
+      type="button"
+      class="btn btn-primary"
+      onclick="location.href='/post/list?offset=<%= offset + limit%>&limit=<%= limit %>'"
+    >
+    다음 페이지
+    </button>
 
     <%- include("../footer.ejs"); -%>
   </body>
