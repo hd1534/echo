@@ -237,6 +237,35 @@ const unlike = (req, res, next) => {
   });
 };
 
+const addComment = (req, res, next) => {
+  const _id = req.params._id;
+
+  const { content, title } = req.body;
+  if (!content && !title) return res.status(400).send("nothing to change");
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(400).send("_id is invalid");
+
+  post = postModel.findById(_id, (err, post) => {
+    if (err) next(err);
+    if (!post) return res.status(404).send("NotFound");
+
+    post.comments.push({
+      title,
+      content,
+      writer: {
+        idx: req.decodedJWT.user.idx,
+        name: req.decodedJWT.user.name,
+      },
+    });
+
+    post
+      .save()
+      .then((post) => res.status(202).send())
+      .catch((err) => next(err));
+  });
+};
+
 module.exports = {
   list,
   detail,
@@ -245,6 +274,7 @@ module.exports = {
   remove,
   like,
   unlike,
+  addComment,
   showListPage,
   showDetailPage,
   showCreatePage,

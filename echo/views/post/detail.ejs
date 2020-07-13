@@ -31,7 +31,7 @@
         type="text"
         id="likes"
         class="form-control"
-        value="<%= result.meta.likes %>"
+        value="<%= result.likes %>"
         readonly
       />
       <label for="likes">좋아요</label>
@@ -123,10 +123,69 @@
     <% } %>
   </br>
   <div>
-    <h3> 댓글 : <%= result.comments.lenth %> </h3>
 
+    <div class="row d-flex justify-content-center" style="width: 100%;">
+    <!-- Default horizontal form -->
+<form id="commentForm" style="width: 80%;text-align: center;" >
+  <!-- Grid row -->
+  <div class="form-group row">
+    <!-- Default input -->
+    <label for="inputTitle" class="col-sm-2 col-form-label">제목</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputTitle" placeholder="제목">
+    </div>
+  </div>
+  <!-- Grid row -->
+
+  <!-- Grid row -->
+  <div class="form-group row">
+    <!-- Default input -->
+    <label for="inputContent" class="col-sm-2 col-form-label">내용</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputContent" placeholder="내용">
+    </div>
+  </div>
+  <!-- Grid row -->
+
+  <!-- Grid row -->
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary btn-md">댓글 달기</button>
+    </div>
+  </div>
+  <!-- Grid row -->
+</form>
+<!-- Default horizontal form -->
+</div>
+
+<script>
+  $(function () {
+    $("#commentForm").submit((event) => {
+      event.preventDefault();
+
+      const title = $("#inputTitle").val();
+      const content = $("#inputContent").val();
+
+      $.ajax({
+        url: "/post/_id/<%= result._id %>/comment",
+        type: "POST",
+        data: { title, content },
+      })
+        .done(() => {
+          alert("1")
+          window.location.reload()
+        })
+        .fail((request, status, error) => {
+          alert(request.responseText);
+        });
+    });
+  });
+</script>
+
+    <h3> 댓글 : <%= result.comments.length %> </h3>
+<div class="row justify-content-center" >
     <!-- Card deck -->
-    <div class="row row-cols-1 row-cols-md-1">
+    <div class="row row-cols-1 row-cols-md-1 " style="width: 80%;">
     <% result.comments.forEach(comment => { %>
 
     <!-- Card -->
@@ -159,7 +218,7 @@
 <% }) %>
 </div>
 <!-- Card deck -->
-
+</div>
   </div>
   </body>
 </html>

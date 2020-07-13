@@ -65,8 +65,15 @@
         이전 페이지
         </button>
         <% } else { %>
-          <div></div>
+          <div class="btn btn-primary" style="visibility: hidden;"> 이전 페이지 </div>
     <% } %>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="location.href='/post/new'"
+        >
+          글쓰기
+        </button>
         <button
           type="button"
           class="btn btn-primary"

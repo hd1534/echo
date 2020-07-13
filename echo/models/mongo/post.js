@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 
 bgresource = [
   "https://s2.best-wallpaper.net/wallpaper/1680x1050/1603/Beautiful-universe-stars-galaxies_1680x1050.jpg",
-  "https://lh3.googleusercontent.com/proxy/lBMKQQ-sy3oFOyAKLba477GTwZ05tnZ-LglZLUXYWZPLYfK_fKMmn3nuG06TfBNsSlb-3z6Gxie7GEsTGsGZbinJ45bVa2-xih1cCsByrMyhNvJxsAJ8dUU4g0mPip5eKWw_88VYG9U3",
   "https://c.wallhere.com/photos/e6/78/artwork_space_art-177315.jpg!d",
   "https://image.fmkorea.com/files/attach/new/20190317/486616/291138520/1674527678/3bb303c76f55866af2dfdc95aa040105.jpg",
   "https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
@@ -88,14 +87,21 @@ const PostSchema = new mongoose.Schema({
   },
   liked_people_idxs: {
     type: [Number],
-    set: (v) => {
-      // need to change. it's not working like what i expected
-      if (this.meta && v != null) {
-        this.meta.likes = v.length;
+    set: function (v, schematype) {
+      if (
+        this instanceof mongoose.Document &&
+        this.liked_people_idxs &&
+        v != null
+      ) {
+        // 이렇게 했더니 삭제일때도 실행된다!
+        this.meta.likes = this.liked_people_idxs.length + v.length;
       }
       return v;
     },
   },
+});
+PostSchema.virtual("likes").get(function () {
+  return this.liked_people_idxs.length;
 });
 
 const Post = mongoose.model("post", PostSchema);
