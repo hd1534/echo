@@ -3,15 +3,14 @@ const mongoose = require("mongoose");
 
 const CommentSchema = new mongoose.Schema();
 CommentSchema.add({
-  title: {
+  content: {
     type: String,
     required: true,
     set: xss,
   },
-  comment: {
-    type: String,
-    required: true,
-    set: xss,
+  date: {
+    type: Date,
+    default: Date.now,
   },
   writer: {
     idx: {
@@ -69,14 +68,21 @@ const PostSchema = new mongoose.Schema({
   },
   liked_people_idxs: {
     type: [Number],
-    set: (v) => {
-      // need to change. it's not working like what i expected
-      if (this instanceof mongoose.Document && v != null) {
-        this.meta.likes = v.length;
+    set: function (v, schematype) {
+      if (
+        this instanceof mongoose.Document &&
+        this.liked_people_idxs &&
+        v != null
+      ) {
+        // 이렇게 했더니 삭제일때도 실행된다! 이거 수정해야된다
+        this.meta.likes = this.liked_people_idxs.length + v.length;
       }
       return v;
     },
   },
+});
+PostSchema.virtual("likes").get(function () {
+  return this.liked_people_idxs.length;
 });
 
 const Post = mongoose.model("post", PostSchema);
