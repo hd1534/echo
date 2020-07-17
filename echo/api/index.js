@@ -9,6 +9,7 @@ const { permissionChecker } = require("./permission/permission.ctrl");
 router.use("/token", require("./token"));
 router.use("/user", require("./user"));
 router.use("/permission", tokenCheck, require("./permission"));
+router.use("/tag", tokenCheck, require("./tag"));
 router.use("/post", tokenCheck, require("./post"));
 router.use("/admin", tokenCheck, permissionChecker("admin", 10), (req, res) => {
   res.send("hi admin!"); // tmp
