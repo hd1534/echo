@@ -72,10 +72,12 @@ const findAllByWriterIdx = (req, res, next) => {
 
 const create = (req, res, next) => {
   const { title, content, comments, liked_people_idxs } = req.body;
-  writer = {
-    idx: req.decodedJWT.user.idx,
-    name: req.decodedJWT.user.name,
-  };
+  // TODO: wirter를 ref 로 바꾸면 바꿔야됨 (임시로 이렇게 해둠)
+  // writer = {
+  //   idx: req.decodedJWT.user.idx,
+  //   name: req.decodedJWT.user.name,
+  // };
+  writer = req.decodedJWT.user.idx;
 
   // Document.save() 방식
   const post = new postModel({
@@ -90,7 +92,7 @@ const create = (req, res, next) => {
     if (mongoErr) return next(mongoErr);
 
     Posts.create({
-      writer_idx: writer.idx,
+      writer_idx: writer,
       title,
       post_id: result._id.toString(),
     })

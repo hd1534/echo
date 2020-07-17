@@ -6,7 +6,7 @@ const emailChecker = require("../../functions").emailChecker;
 const passwordChecker = require("../../functions").passwordChecker;
 
 const create = (req, res, next) => {
-  var { name, id, password, email, gender, user_type } = req.body;
+  var { name, id, password, email, gender, type } = req.body;
   // start checking data
   if (!name) return res.status(400).send("enter your name");
   if (!id) return res.status(400).send("enter your id");
@@ -21,7 +21,7 @@ const create = (req, res, next) => {
     return res.status(400).send("your password is same as your email");
   if (!email) return res.status(400).send("enter your email");
   if (!emailChecker(email)) return res.status(400).send("check your email");
-  user_type = user_type ? user_type : "O";
+  type = type ? type : "O";
   gender = gender ? gender : "O";
   // end checking
 
@@ -32,7 +32,7 @@ const create = (req, res, next) => {
       bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) return res.status(500).send("server error");
 
-        Users.create({ name, id, password: hash, email, gender, user_type })
+        Users.create({ name, id, password: hash, email, gender, type })
           .then((user) => res.send(user))
           .catch((err) => next(err));
       });
@@ -50,11 +50,9 @@ const findByIdx = (req, res, next) => {
     },
   })
     .then((result) => {
-      if (!result) {
-        res.status(404).send("NotFound");
-      } else {
-        res.send(result);
-      }
+      if (!result) return res.status(404).send("NotFound");
+
+      return res.send(result);
     })
     .catch((err) => next(err));
 };
@@ -66,11 +64,9 @@ const updateByIdx = (req, res, next) => {
     fields: ["name"], // fields to update
   })
     .then((result) => {
-      if (!result) {
-        res.status(404).send("NotFound");
-      } else {
-        res.send(result);
-      }
+      if (!result) return res.status(404).send("NotFound");
+
+      return res.send(result);
     })
     .catch((err) => next(err));
 };
@@ -84,11 +80,9 @@ const findByIdxAndDelete = (req, res, next) => {
     },
   })
     .then((result) => {
-      if (!result) {
-        res.status(404).send("NotFound");
-      } else {
-        res.status(200).send("deleted");
-      }
+      if (!result) return res.status(404).send("NotFound");
+
+      return res.status(200).send("deleted");
     })
     .catch((err) => next(err));
 };

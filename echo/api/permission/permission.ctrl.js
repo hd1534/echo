@@ -60,17 +60,11 @@ const findByIdx = (req, res, next) => {
 };
 
 const findAllByUserIdx = (req, res, next) => {
-  const offset = parseInt(req.query.offset || 0, 10);
-  const limit = parseInt(req.query.limit || 10, 10);
-  if (Number.isNaN(limit) || Number.isNaN(offset)) return res.status(400).end();
-
   Permissions.findAll({
     attributes: ["section", "level"],
     where: {
-      user_idx: user_idx,
+      user_idx: req.decodedJWT.user.idx,
     },
-    offset: offset,
-    limit: limit,
   })
     .then((result) => {
       if (!result) {
