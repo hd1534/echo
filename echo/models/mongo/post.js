@@ -13,33 +13,22 @@ CommentSchema.add({
     default: Date.now,
   },
   writer: {
-    idx: {
-      type: Number,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-  },
+    type: Number,
+    // type: mongoose.Schema.ObjectId,
+    required: [true, "writer is empty"],
+    // ref: "user",
+  }, // TODO: https://mongoosejs.com/docs/2.7.x/docs/populate.html 참고해서 수정할것
   subComments: [CommentSchema],
 });
 
 const PostSchema = new mongoose.Schema({
   // tags: {type:[{name: String, idx: Number}],required:true},  // will be added
   writer: {
-    type: {
-      idx: {
-        type: Number,
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-    },
+    type: Number,
+    // type: mongoose.Schema.ObjectId,
     required: [true, "writer is empty"],
-  },
+    // ref: "user",
+  }, // TODO: https://mongoosejs.com/docs/2.7.x/docs/populate.html 참고해서 수정할것
   title: {
     type: String,
     required: [true, "title is empty"],

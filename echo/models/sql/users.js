@@ -1,3 +1,5 @@
+const xss = require("xss");
+
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
@@ -13,6 +15,9 @@ module.exports = function (sequelize, DataTypes) {
       name: {
         type: DataTypes.STRING(20),
         allowNull: false,
+        set(value) {
+          this.setDataValue("name", xss(value));
+        },
       },
       id: {
         type: DataTypes.STRING(20),
@@ -28,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
         unique: true,
         allowNull: false,
       },
-      user_type: {
+      type: {
         type: DataTypes.ENUM("T", "D", "S", "P", "O"),
         default: "O",
         allowNull: false,
@@ -36,6 +41,10 @@ module.exports = function (sequelize, DataTypes) {
       gender: {
         type: DataTypes.ENUM("M", "F", "O"),
         allowNull: false,
+      },
+      date: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.fn("NOW"),
       },
     },
     {
