@@ -94,3 +94,4 @@ typings/
 *.ini
 *.pem
 *.pub
+seq-to-yaml.yaml
