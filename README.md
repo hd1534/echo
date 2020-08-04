@@ -45,6 +45,19 @@ code formatter
 
 ---
 
+## swagger 좀 편하게 하기
+
+> /dev 파일에 있는 seq-to-yaml이나 mon-to-yaml에 가서 원하는 파일을 지정한뒤
+>
+> ```
+> npm run seq-to-yaml
+> npm run mon-to-yaml
+> ```
+>
+> 을 해서 만들어진 파일을 참고하면 편할 것이다.
+
+---
+
 참고
 
 ```
