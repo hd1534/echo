@@ -1,0 +1,57 @@
+definitions:
+  User:
+    type: "object"
+    properties:
+      idx:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+        maxLength: 20
+      id:
+        type: "string"
+        maxLength: 20
+      password:
+        type: "string"
+        maxLength: 100
+      email:
+        type: "string"
+        maxLength: 50
+      type:
+        type: "string"
+        enum:
+          - "T"
+          - "D"
+          - "S"
+          - "P"
+          - "O"
+      gender:
+        type: "string"
+        enum:
+          - "M"
+          - "F"
+          - "O"
+      date:
+        type: "string"
+        format: "date-time"
+        nullable: true
+        default:
+          fn: "NOW"
+          args: []
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+    required:
+      - "idx"
+      - "name"
+      - "id"
+      - "password"
+      - "email"
+      - "type"
+      - "gender"
+      - "date"
+      - "createdAt"
+      - "updatedAt"
